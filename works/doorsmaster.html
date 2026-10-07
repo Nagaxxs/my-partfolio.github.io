@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DoorsMaster — установка входных и межкомнатных дверей за 1 день</title>
+<meta name="description" content="DoorsMaster: продажа и установка входных, межкомнатных и скрытых дверей, перегородок. Бесплатный замер, фиксированная цена в договоре, гарантия 5 лет на монтаж.">
+<meta name="theme-color" content="#1f5bff">
+<meta name="color-scheme" content="light dark">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="ru_RU">
+<meta property="og:title" content="DoorsMaster — двери с установкой за 1 день">
+<meta property="og:description" content="Бесплатный замер, фиксированная цена в договоре и гарантия 5 лет на монтаж.">
+<script>
+/* theme before first paint: saved choice → system preference */
+(function(){var d=document.documentElement,t=null;
+try{t=localStorage.getItem('theme')}catch(e){}
+if(t!=='dark'&&t!=='light')t=(window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';
+d.setAttribute('data-theme',t);d.classList.add('js');
+var m=document.querySelector('meta[name="theme-color"]');if(m)m.setAttribute('content',t==='dark'?'#0a0a0b':'#1f5bff');})();
+</script>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%231f5bff'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='800' font-size='20' text-anchor='middle' fill='white'%3ED%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="../assets/css/fonts.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+ color-scheme:light;
+ --blue:#1f5bff;--acc:#1f5bff;--acc2:#4d7dff;
+ --bg:#fff;--bg2:#f6f8ff;--surface:#fff;--text:#0f1b2d;--muted:#4a586d;--line:#e6eaf0;--line2:#cfd8e8;--soft:#eef3ff;
+ --hdr:rgba(255,255,255,.76);--hero-r:#eef3ff;--panel:#eef3ff;
+ --sh1:0 10px 30px rgba(15,27,45,.06);--sh2:0 20px 50px rgba(15,27,45,.14);--sh3:0 24px 60px rgba(15,27,45,.08);
+ --glow:rgba(31,91,255,.09);--glowb:rgba(31,91,255,.55);--orb:rgba(31,91,255,.17);--dot:rgba(15,27,45,.16);
+ --foot:#0f1b2d;--foot-t:#aebbd3;--stats:#0f1b2d;--rev-p:#2b3a52;--btn-o:#fff;--btn-ob:#cfd8e8;--ring:rgba(31,91,255,.12);
+ /* door illustration */
+ --fr:#0f1b2d;--d-a:#dfe3ea;--d-b:#fff;--d-in:#c3cbd9;--d-h:#0f1b2d;--d-sh:rgba(15,27,45,.25);
+ --in-a:#1b2a44;--in-b:#2a3d5f;--in-l:rgba(255,255,255,.22);--in-h:#cfd8e8;
+ --im-a:#e7eaf0;--im-b:#fff;--im-bd:#fff;--im-ring:#cfd8e8;--im-in:#d3dae8;--im-h:#0f1b2d;
+ --hid-bg:#eef3ff;--hid-ring:#d7e0f7;--hid-l:#cdd8f3;--hid-h:#aebcdf;
+ --pt-a:#dbe7ff;--pt-b:#f7faff;--pt-c:#c9daff;--pt-l:rgba(31,91,255,.10);
+ --pic:#eef3ff;--pic-f:#dbe4fa;--dsh:rgba(15,27,45,.2);--scf:rgba(15,27,45,.10);--pl:rgba(31,91,255,.14);--pl2:rgba(15,27,45,.08);
+ --s1:linear-gradient(120deg,#eef3ff,#dbe6ff);--s2:linear-gradient(120deg,#f3f5f9,#e3e8f1);--s3:linear-gradient(120deg,#e6eeff,#f7f9ff);
+ --s4:linear-gradient(120deg,#e9edf5,#f7f8fb);--s5:linear-gradient(120deg,#dde8ff,#eef3ff);--s6:linear-gradient(120deg,#f4f6fa,#e2e9f7);
+ --ease:cubic-bezier(.22,1,.36,1);
+}
+[data-theme=dark]{
+ color-scheme:dark;
+ --acc:#4d7dff;--acc2:#7a9dff;
+ --bg:#0a0a0b;--bg2:#0d0d10;--surface:#111114;--text:#f2f4f8;--muted:#9aa3b5;--line:rgba(255,255,255,.08);--line2:rgba(255,255,255,.14);--soft:rgba(77,125,255,.13);
+ --hdr:rgba(10,10,11,.72);--hero-r:#0d1016;--panel:#0e1118;
+ --sh1:0 10px 30px rgba(0,0,0,.35);--sh2:0 24px 60px rgba(0,0,0,.55);--sh3:0 24px 60px rgba(0,0,0,.4);
+ --glow:rgba(77,125,255,.13);--glowb:rgba(110,150,255,.7);--orb:rgba(31,91,255,.26);--dot:rgba(255,255,255,.14);
+ --foot:#060607;--foot-t:#8d96a8;--stats:#0f121a;--rev-p:#c3cad8;--btn-o:rgba(255,255,255,.04);--btn-ob:rgba(255,255,255,.16);--ring:rgba(77,125,255,.25);
+ --fr:#323b50;--d-a:#14161b;--d-b:#262a33;--d-in:#3a4153;--d-h:#9fb0d4;--d-sh:rgba(0,0,0,.65);
+ --in-a:#172036;--in-b:#243452;--in-l:rgba(255,255,255,.16);--in-h:#aab6d0;
+ --im-a:#23262d;--im-b:#353944;--im-bd:#2b2f38;--im-ring:#444a58;--im-in:#4a5060;--im-h:#b9c2d6;
+ --hid-bg:#12151c;--hid-ring:#2a3142;--hid-l:#2a3142;--hid-h:#4a5470;
+ --pt-a:#14203d;--pt-b:#0d1424;--pt-c:#1c2e58;--pt-l:rgba(77,125,255,.16);
+ --pic:#0e1119;--pic-f:#161c2b;--dsh:rgba(0,0,0,.55);--scf:rgba(0,0,0,.35);--pl:rgba(77,125,255,.2);--pl2:rgba(255,255,255,.06);
+ --s1:linear-gradient(120deg,#0f1628,#0b1020);--s2:linear-gradient(120deg,#13151a,#0d0e12);--s3:linear-gradient(120deg,#0e1526,#111522);
+ --s4:linear-gradient(120deg,#12141a,#0c0d11);--s5:linear-gradient(120deg,#0d1530,#0f1424);--s6:linear-gradient(120deg,#14161c,#0e1322);
+}
+html{scroll-behavior:smooth;scroll-padding-top:84px;-webkit-text-size-adjust:100%}
+a{text-decoration:none;color:inherit}
+body{background:var(--bg);color:var(--text);font-family:Inter,sans-serif;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+h1,h2,h3,.logo,.ph{font-family:Manrope,sans-serif}
+::selection{background:var(--acc);color:#fff}
+:focus-visible{outline:2px solid var(--acc);outline-offset:3px;border-radius:8px}
+html.tt-anim *,html.tt-anim *:before,html.tt-anim *:after{transition:background-color .45s ease,color .45s ease,border-color .45s ease,box-shadow .45s ease,fill .45s ease,stroke .45s ease!important}
+::view-transition-old(root),::view-transition-new(root){animation-duration:.4s;animation-timing-function:ease}
+
+/* progress */
+.prog{position:fixed;left:0;top:0;right:0;height:2px;z-index:60;background:linear-gradient(90deg,var(--acc),var(--acc2));transform:scaleX(0);transform-origin:0 50%;pointer-events:none}
+
+/* header (glass) */
+header{position:sticky;top:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:17px 64px;font-size:15px;border-bottom:1px solid var(--line);background:var(--hdr);-webkit-backdrop-filter:saturate(1.6) blur(14px);backdrop-filter:saturate(1.6) blur(14px);transition:box-shadow .3s}
+header.sc{box-shadow:0 8px 30px rgba(0,0,0,.08)}[data-theme=dark] header.sc{box-shadow:0 8px 30px rgba(0,0,0,.5)}
+.logo{font-weight:800;font-size:22px;white-space:nowrap}.logo b{background:var(--blue);color:#fff;border-radius:8px;padding:2px 8px;margin-right:8px}
+nav{display:flex;gap:32px;color:var(--muted)}
+nav a{position:relative;transition:color .2s;padding:4px 0}nav a:hover{color:var(--text)}
+nav a:not(.navph):after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;border-radius:2px;background:var(--acc);transform:scaleX(0);transform-origin:0 50%;transition:transform .35s var(--ease)}
+nav a:not(.navph):hover:after{transform:scaleX(1)}
+.hr{display:flex;align-items:center;gap:14px}
+.ph{font-weight:700}
+.tt{width:42px;height:42px;border-radius:12px;border:1px solid var(--line2);background:var(--surface);color:var(--text);cursor:pointer;position:relative;flex:none;transition:transform .25s var(--ease),border-color .2s}
+.tt:hover{transform:translateY(-1px);border-color:var(--acc)}.tt:active{transform:scale(.94)}
+.tt svg{position:absolute;left:50%;top:50%;width:20px;height:20px;margin:-10px 0 0 -10px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:transform .5s var(--ease),opacity .3s}
+.tt .sun{opacity:0;transform:rotate(-90deg) scale(.5)}
+[data-theme=dark] .tt .sun{opacity:1;transform:none}[data-theme=dark] .tt .moon{opacity:0;transform:rotate(90deg) scale(.5)}
+.burger{display:none;width:44px;height:44px;border:1px solid var(--line2);border-radius:12px;background:var(--surface);cursor:pointer;position:relative}
+.burger span,.burger span:before,.burger span:after{position:absolute;left:12px;right:12px;height:2px;background:var(--text);border-radius:2px;content:"";transition:.25s}
+.burger span{top:21px}.burger span:before{left:0;right:0;top:-7px}.burger span:after{left:0;right:0;top:7px}
+.burger.open span{background:transparent}.burger.open span:before{top:0;transform:rotate(45deg)}.burger.open span:after{top:0;transform:rotate(-45deg)}
+
+/* buttons */
+.b{position:relative;overflow:hidden;display:inline-block;background:var(--blue);color:#fff;padding:18px 34px;border-radius:12px;font-weight:600;box-shadow:0 12px 30px rgba(31,91,255,.35);margin-right:12px;border:0;font:600 16px Inter,sans-serif;cursor:pointer;transform:translate3d(var(--tx,0px),calc(var(--ty,0px) + var(--lift,0px)),0);transition:transform .28s var(--ease),box-shadow .3s,background-color .2s,border-color .2s}
+.b:hover{--lift:-2px;box-shadow:0 16px 36px rgba(31,91,255,.45)}.b:active{--lift:0px}
+.b:after{content:"";position:absolute;top:0;bottom:0;left:0;width:60%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.28),transparent);transform:translateX(-130%) skewX(-18deg);pointer-events:none}
+.b:hover:after{transform:translateX(230%) skewX(-18deg);transition:transform .8s var(--ease)}
+.b.o{background:var(--btn-o);color:var(--text);box-shadow:none;border:1px solid var(--btn-ob)}
+.b.o:hover{border-color:var(--acc);box-shadow:0 0 0 4px var(--ring)}.b.o:after{display:none}
+[data-theme=dark] .b{box-shadow:0 10px 34px rgba(31,91,255,.38)}
+
+/* hero */
+.hero{position:relative;overflow:hidden;min-height:max(640px,calc(100vh - 76px));display:grid;grid-template-columns:1fr 1fr;background:var(--bg)}
+.hbg{position:absolute;inset:0;pointer-events:none;overflow:hidden}
+.hbg .rp{position:absolute;top:0;bottom:0;right:0;width:55%;background:var(--hero-r)}
+.hbg .dots{position:absolute;inset:0;background-image:radial-gradient(var(--dot) 1px,transparent 1.3px);background-size:26px 26px;-webkit-mask-image:radial-gradient(ellipse 85% 75% at 62% 48%,#000 20%,transparent 78%);mask-image:radial-gradient(ellipse 85% 75% at 62% 48%,#000 20%,transparent 78%)}
+.orb{position:absolute;border-radius:50%;background:radial-gradient(circle,var(--orb),transparent 66%);width:640px;height:640px;will-change:transform}
+.o1{right:-60px;top:-160px;animation:orb1 16s ease-in-out infinite alternate}
+.o2{left:30%;bottom:-340px;opacity:.7;animation:orb2 20s ease-in-out infinite alternate}
+@keyframes orb1{to{transform:translate3d(-90px,70px,0) scale(1.08)}}
+@keyframes orb2{to{transform:translate3d(110px,-50px,0) scale(.92)}}
+.hspot{position:absolute;left:0;top:0;width:560px;height:560px;margin:-280px 0 0 -280px;border-radius:50%;background:radial-gradient(circle,var(--glow),transparent 66%);opacity:0;transition:opacity .5s;will-change:transform}
+.hero.hov .hspot{opacity:1}
+.l,.r{position:relative;z-index:1}
+.l{padding:40px 64px;display:flex;flex-direction:column;justify-content:center}
+.pill{align-self:flex-start;display:inline-flex;align-items:center;gap:10px;font-size:13.5px;font-weight:500;color:var(--muted);border:1px solid var(--line2);background:var(--surface);padding:7px 14px 7px 12px;border-radius:99px;margin-bottom:26px}
+.pill i{position:relative;width:8px;height:8px;border-radius:50%;background:#22c55e}
+.pill i:after{content:"";position:absolute;inset:0;border-radius:50%;background:#22c55e;animation:ping 2s ease-out infinite}
+@keyframes ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(3.2);opacity:0}}
+h1{font-weight:800;font-size:68px;line-height:1.05;letter-spacing:-.025em}
+h1 span{background:linear-gradient(100deg,var(--acc) 20%,var(--acc2) 90%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent}
+.hero p{font-size:19px;line-height:1.6;color:var(--muted);margin:26px 0 34px;max-width:500px}
+.hero .b{margin-bottom:10px}
+.list{margin-top:42px;display:grid;grid-template-columns:1fr 1fr;gap:14px 30px;font-size:15px;max-width:520px}.list div:before{content:"✓";color:var(--acc);font-weight:800;margin-right:10px}
+.r{display:flex;align-items:center;justify-content:center;padding:40px 0;perspective:1000px}
+.dw{position:relative;transform:rotateY(var(--ry,0deg)) rotateX(var(--rx,0deg));transition:transform .25s ease-out;transform-style:preserve-3d}
+.dw:before{content:"";position:absolute;left:-30px;right:-30px;bottom:-34px;height:46px;border-radius:50%;background:radial-gradient(ellipse at center,var(--dsh),transparent 70%)}
+.d{width:300px;height:520px;background:linear-gradient(90deg,var(--d-a),var(--d-b) 50%,var(--d-a));border-radius:10px;border:10px solid var(--fr);box-shadow:0 40px 80px var(--d-sh);position:relative}
+[data-theme=dark] .d{box-shadow:0 40px 90px rgba(0,0,0,.7),0 0 0 1px rgba(255,255,255,.05),0 0 90px rgba(31,91,255,.2)}
+.d:before{content:"";position:absolute;inset:30px;border:2px solid var(--d-in)}
+.d:after{content:"";position:absolute;right:20px;top:52%;width:10px;height:84px;background:var(--d-h);border-radius:5px}
+.c{position:absolute;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 22px;box-shadow:0 18px 40px rgba(15,27,45,.14);font-size:14px;color:var(--muted);animation:fl 6s ease-in-out infinite alternate;z-index:2}
+[data-theme=dark] .c{background:rgba(20,20,24,.82);box-shadow:0 18px 40px rgba(0,0,0,.5)}
+.c b{display:block;font-family:Manrope;font-size:26px;color:var(--text);font-variant-numeric:tabular-nums}
+.c1{left:6%;top:18%}.c2{right:6%;bottom:16%;animation-delay:-3s}
+@keyframes fl{from{transform:translate3d(0,-7px,0)}to{transform:translate3d(0,7px,0)}}
+
+/* marquee */
+.mq{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--bg);padding:20px 0;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mqt{display:flex;width:max-content;animation:mq 42s linear infinite}
+.mq:hover .mqt{animation-play-state:paused}
+.mqg{display:flex;flex:none}
+.mqg span{display:flex;align-items:center;gap:14px;padding:0 22px;font:600 15px Manrope,sans-serif;color:var(--muted);white-space:nowrap}
+.mqg span:after{content:"";width:5px;height:5px;border-radius:50%;background:var(--acc);margin-left:22px;opacity:.7}
+.mqg svg{width:20px;height:20px;stroke:var(--acc);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+@keyframes mq{to{transform:translate3d(-50%,0,0)}}
+
+/* sections */
+section{padding:104px 64px}
+.wrap{max-width:1200px;margin:0 auto}
+.tag{display:inline-block;color:var(--acc);background:var(--soft);font-weight:600;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;border-radius:99px;margin-bottom:18px}
+.tag.w{background:var(--surface);border:1px solid var(--line)}
+h2{font-weight:800;font-size:44px;line-height:1.1;letter-spacing:-.02em;max-width:720px}
+.sub{font-size:18px;line-height:1.6;color:var(--muted);margin-top:16px;max-width:620px}
+.head{margin-bottom:54px}
+.alt{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+
+/* spotlight glow (cursor-follow) */
+.spot{position:relative}
+.glow{position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;transition:opacity .35s;z-index:3}
+.glow:before,.glow:after{content:"";position:absolute;inset:0;border-radius:inherit}
+.glow:before{background:radial-gradient(340px circle at var(--mx,50%) var(--my,50%),var(--glow),transparent 70%)}
+.glow:after{padding:1px;background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),var(--glowb),transparent 70%);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude}
+.spot:hover>.glow{opacity:1}
+
+/* catalog */
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--sh1);transition:transform .45s var(--ease),border-color .3s;display:flex;flex-direction:column}
+.card:hover{transform:translate3d(0,-6px,0)}
+.pic{height:250px;background:var(--pic);display:flex;align-items:flex-end;justify-content:center;position:relative;overflow:hidden}
+.pic:before{content:"";position:absolute;left:0;right:0;bottom:0;height:22px;background:var(--pic-f)}
+.pic .dr{transition:transform .6s var(--ease);transform-origin:50% 100%}.card:hover .pic .dr{transform:scale(1.04)}
+.card .body{padding:22px 24px 26px;display:flex;flex-direction:column;flex:1}
+.card h3{font-size:21px;font-weight:800}
+.card p{font-size:14.5px;line-height:1.55;color:var(--muted);margin:8px 0 18px;flex:1}
+.price{font-family:Manrope;font-weight:800;font-size:20px;color:var(--text)}.price small{font-weight:500;font-size:14px;color:var(--muted)}
+.card .more{margin-top:14px;color:var(--acc);font-weight:600;font-size:15px;display:inline-block;transition:transform .3s var(--ease)}.card:hover .more{transform:translate3d(4px,0,0)}
+/* css doors */
+.dr{position:relative;width:118px;height:206px;border-radius:6px 6px 0 0;z-index:1;margin-bottom:22px}
+.dr:after{content:"";position:absolute;width:7px;height:34px;border-radius:4px;top:52%;background:var(--fr)}
+.dr.in{background:linear-gradient(90deg,var(--in-a),var(--in-b) 50%,var(--in-a));border:7px solid var(--fr);box-shadow:0 18px 30px var(--dsh)}
+.dr.in:before{content:"";position:absolute;inset:18px;border:2px solid var(--in-l);border-radius:3px}
+.dr.in:after{right:11px;background:var(--in-h)}
+.dr.im{background:linear-gradient(90deg,var(--im-a),var(--im-b) 50%,var(--im-a));border:7px solid var(--im-bd);box-shadow:0 18px 30px var(--dsh),0 0 0 2px var(--im-ring)}
+.dr.im:before{content:"";position:absolute;inset:16px;border:2px solid var(--im-in)}
+.dr.im:after{right:10px;background:var(--im-h)}
+.dr.hid{background:var(--hid-bg);border:0;width:150px;box-shadow:inset 0 0 0 2px var(--hid-ring)}
+.dr.hid:before{content:"";position:absolute;left:16px;top:0;bottom:0;width:2px;background:var(--hid-l);box-shadow:116px 0 0 var(--hid-l)}
+.dr.hid:after{width:34px;height:3px;left:50%;top:50%;margin-left:-17px;background:var(--hid-h)}
+.dr.part{width:190px;height:206px;border:5px solid var(--fr);background:repeating-linear-gradient(90deg,var(--pt-l) 0 1px,transparent 1px 3px),linear-gradient(135deg,var(--pt-a),var(--pt-b) 60%,var(--pt-c));box-shadow:0 18px 30px var(--dsh)}
+.dr.part:before{content:"";position:absolute;left:50%;top:0;bottom:0;width:5px;margin-left:-2.5px;background:var(--fr)}
+.dr.part:after{display:none}
+
+/* services — bento */
+.bento{display:grid;grid-template-columns:repeat(4,1fr);gap:20px}
+.svc{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:30px;box-shadow:var(--sh1);overflow:hidden;transition:transform .45s var(--ease),border-color .3s}
+.svc:hover{transform:translate3d(0,-4px,0)}
+.svc.w{grid-column:span 2;background:radial-gradient(420px circle at 100% 0,var(--soft),transparent 70%),var(--surface);display:flex;flex-direction:column;justify-content:flex-end;min-height:250px}
+.svc.w h3{font-size:26px}
+.svc.w p{max-width:380px}
+.deco{position:absolute;right:-18px;top:-12px;width:190px;height:190px;stroke:var(--acc);fill:none;stroke-width:1;stroke-linecap:round;stroke-linejoin:round;opacity:.16;pointer-events:none;transition:transform .7s var(--ease)}
+.svc.w:hover .deco{transform:rotate(-6deg) scale(1.06)}
+.ic{width:52px;height:52px;border-radius:14px;background:var(--soft);color:var(--acc);display:flex;align-items:center;justify-content:center;margin-bottom:20px}
+.svc.w .ic{margin-top:auto}
+.ic svg{width:26px;height:26px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.svc h3{font-size:20px;font-weight:800;margin-bottom:8px}.svc p{font-size:15px;line-height:1.6;color:var(--muted)}
+.chip{display:inline-block;font-size:12.5px;font-weight:600;color:#16a34a;background:rgba(34,197,94,.12);padding:4px 10px;border-radius:99px;margin-bottom:12px;align-self:flex-start}
+[data-theme=dark] .chip{color:#4ade80}
+
+/* stats */
+.stats{background:radial-gradient(520px circle at 100% 0,rgba(31,91,255,.34),transparent 65%),var(--stats);color:#fff;border-radius:24px;padding:56px 48px;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;position:relative;overflow:hidden;border:1px solid transparent}
+[data-theme=dark] .stats{border-color:var(--line)}
+.st{position:relative;text-align:left;border-left:1px solid rgba(255,255,255,.14);padding-left:26px}.st:first-child{border:0;padding-left:0}
+.st b{display:block;font-family:Manrope;font-weight:800;font-size:46px;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.st span{color:#aebbd3;font-size:15px}
+.stsec{padding-top:0}
+
+/* steps */
+.steps{display:grid;grid-template-columns:repeat(5,1fr);gap:20px;counter-reset:s;position:relative}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:26px 22px;box-shadow:var(--sh1);position:relative;transition:transform .45s var(--ease)}
+.step:hover{transform:translate3d(0,-4px,0)}
+.step:before{counter-increment:s;content:counter(s);display:flex;align-items:center;justify-content:center;width:42px;height:42px;border-radius:12px;background:var(--blue);color:#fff;font-family:Manrope;font-weight:800;margin-bottom:18px;box-shadow:0 8px 20px rgba(31,91,255,.3)}
+.step h3{font-size:18px;font-weight:800;margin-bottom:8px}.step p{font-size:14.5px;line-height:1.55;color:var(--muted)}
+
+/* gallery */
+.gal{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+.work{border-radius:16px;overflow:hidden;border:1px solid var(--line);box-shadow:var(--sh1);background:var(--surface);transition:transform .45s var(--ease)}
+.work:hover{transform:translate3d(0,-4px,0)}
+.scene{height:260px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden}
+.scene:after{content:"";position:absolute;left:0;right:0;bottom:0;height:34px;background:var(--scf)}
+.scene .dr{z-index:2;margin-bottom:34px;transform:scale(1.05);transform-origin:bottom}
+.s1{background:var(--s1)}.s2{background:var(--s2)}.s3{background:var(--s3)}.s4{background:var(--s4)}.s5{background:var(--s5)}.s6{background:var(--s6)}
+.scene .pl{position:absolute;left:14%;bottom:34px;width:46px;height:86px;border-radius:50% 50% 8px 8px/40% 40% 8px 8px;background:var(--pl);z-index:1}
+.scene .pl.r2{left:auto;right:12%;height:60px;width:70px;background:var(--pl2);border-radius:10px}
+.work .cap{padding:18px 22px}.work .cap b{font-family:Manrope;font-weight:800;font-size:17px;display:block}.work .cap span{font-size:14px;color:var(--muted)}
+
+/* reviews */
+.rev{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:30px;box-shadow:var(--sh1);display:flex;flex-direction:column;transition:transform .45s var(--ease)}
+.rev:hover{transform:translate3d(0,-4px,0)}
+.stars{color:#ffb400;letter-spacing:3px;font-size:18px;margin-bottom:14px}
+.rev p{font-size:15.5px;line-height:1.65;color:var(--rev-p);flex:1}
+.who{display:flex;gap:14px;align-items:center;margin-top:24px}
+.av{width:46px;height:46px;border-radius:50%;background:var(--soft);color:var(--acc);display:flex;align-items:center;justify-content:center;font-family:Manrope;font-weight:800}
+.who b{display:block;font-family:Manrope}.who span{font-size:13.5px;color:var(--muted)}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+
+/* faq */
+.faq{max-width:820px}
+.q{border:1px solid var(--line);border-radius:14px;background:var(--surface);margin-bottom:14px;box-shadow:var(--sh1);overflow:hidden;transition:border-color .3s}
+.q.open{border-color:var(--line2)}
+.q button{width:100%;text-align:left;background:none;border:0;padding:22px 26px;font:700 17px Manrope,sans-serif;color:var(--text);display:flex;justify-content:space-between;align-items:center;gap:16px;cursor:pointer}
+.q button i{flex:none;width:30px;height:30px;border-radius:50%;background:var(--soft);position:relative;transition:background-color .3s,transform .5s var(--ease)}
+.q button i:before,.q button i:after{content:"";position:absolute;left:9px;right:9px;top:14px;height:2px;background:var(--acc);transition:background-color .3s,transform .4s var(--ease)}
+.q button i:after{transform:rotate(90deg)}
+.q.open button i{background:var(--blue);transform:rotate(180deg)}.q.open button i:before,.q.open button i:after{background:#fff}.q.open button i:after{transform:rotate(0)}
+.ans{display:grid;grid-template-rows:0fr;transition:grid-template-rows .45s var(--ease)}
+.q.open .ans{grid-template-rows:1fr}
+.ans>.ai{overflow:hidden;min-height:0}
+.ai>div{padding:0 26px 24px;font-size:15.5px;line-height:1.65;color:var(--muted);opacity:0;transform:translate3d(0,-8px,0);transition:opacity .3s,transform .5s var(--ease)}
+.q.open .ai>div{opacity:1;transform:none;transition-delay:.08s}
+
+/* contacts */
+.contact{position:relative;overflow:hidden;display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:24px;padding:56px;box-shadow:var(--sh3)}
+.contact:before{content:"";position:absolute;top:0;bottom:0;right:0;left:40%;background:var(--panel)}
+[data-theme=dark] .contact:after{content:"";position:absolute;right:-120px;top:-160px;width:520px;height:520px;border-radius:50%;background:radial-gradient(circle,rgba(31,91,255,.22),transparent 65%);pointer-events:none}
+.contact>*{position:relative;z-index:1}
+.info{margin-top:30px;display:grid;gap:18px}
+.info div{display:flex;gap:14px;align-items:flex-start;font-size:16px;line-height:1.5}
+.info .ic{width:44px;height:44px;margin:0;flex:none;background:var(--soft)}
+.info small{display:block;color:var(--muted);font-size:13px}
+.info strong{font-family:Manrope;font-weight:700}
+form{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:34px;box-shadow:var(--sh2)}
+form h3{font-size:22px;font-weight:800;margin-bottom:6px}form .hint{font-size:14.5px;color:var(--muted);margin-bottom:22px}
+label{display:block;font-size:13.5px;font-weight:600;margin-bottom:7px}
+input{width:100%;border:1px solid var(--line2);border-radius:12px;padding:15px 16px;font:400 16px Inter,sans-serif;color:var(--text);margin-bottom:18px;transition:border-color .2s,box-shadow .2s,background-color .3s;background:var(--bg)}
+[data-theme=dark] input{background:#0a0a0b}
+input::placeholder{color:var(--muted);opacity:.7}
+input:focus{outline:0;border-color:var(--acc);box-shadow:0 0 0 4px var(--ring)}
+form .b{width:100%;margin:0;text-align:center}
+.agree{font-size:12.5px;color:var(--muted);margin-top:14px;line-height:1.5}
+.ok{display:none;text-align:center;padding:30px 10px}
+.ok .tick{width:64px;height:64px;border-radius:50%;background:var(--blue);color:#fff;font-size:30px;display:flex;align-items:center;justify-content:center;margin:0 auto 18px;box-shadow:0 12px 30px rgba(31,91,255,.35)}
+.ok h3{margin-bottom:8px}.ok p{color:var(--muted);line-height:1.6}
+.sent form .f{display:none}.sent .ok{display:block}
+
+/* footer */
+footer{background:var(--foot);color:var(--foot-t);padding:56px 64px 34px;border-top:1px solid var(--line)}
+.fw{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;gap:40px;flex-wrap:wrap}
+footer .logo{color:#fff;margin-bottom:12px}footer p{font-size:14.5px;line-height:1.6;max-width:320px}
+.fc{display:flex;gap:48px;flex-wrap:wrap}.fc div{display:grid;gap:10px;font-size:14.5px;align-content:start}.fc b{color:#fff;font-family:Manrope;margin-bottom:4px}.fc a{transition:color .2s}.fc a:hover{color:#fff}
+.copy{max-width:1200px;margin:40px auto 0;padding-top:24px;border-top:1px solid rgba(255,255,255,.12);font-size:13px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+/* reveal (opacity/transform only) */
+.js .rv{opacity:0;transform:translate3d(0,26px,0);transition:opacity .9s var(--ease),transform .9s var(--ease);transition-delay:var(--d,0s)}
+.js .rv.in{opacity:1;transform:none}
+.navph{display:none}
+
+@media (prefers-reduced-motion:reduce){
+ html{scroll-behavior:auto}
+ *,*:before,*:after{animation:none!important;transition-duration:.01ms!important;transition-delay:0s!important}
+ .js .rv{opacity:1;transform:none}
+ .mq{overflow-x:auto}.mqg+.mqg{display:none}
+}
+
+/* responsive */
+@media (max-width:1100px){
+ header{padding:15px 32px}nav{gap:20px}
+ .l{padding:40px 32px}h1{font-size:52px}
+ section{padding:84px 32px}
+ .grid4{grid-template-columns:repeat(2,1fr)}
+ .bento{grid-template-columns:repeat(2,1fr)}
+ .steps{grid-template-columns:repeat(3,1fr)}
+ .stats{grid-template-columns:repeat(2,1fr);gap:36px 24px}.st:nth-child(3){border:0;padding-left:0}
+ .contact{padding:40px}
+}
+@media (max-width:860px){
+ header{padding:14px 20px}
+ .burger{display:block}
+ .ph{display:none}
+ .hr{gap:10px}
+ nav{position:absolute;top:100%;left:0;right:0;background:var(--bg);flex-direction:column;gap:0;padding:8px 20px 20px;border-bottom:1px solid var(--line);box-shadow:0 24px 40px rgba(0,0,0,.14);transform:translate3d(0,-12px,0);opacity:0;pointer-events:none;visibility:hidden;transition:transform .3s var(--ease),opacity .25s,visibility .25s}
+ nav.open{transform:none;opacity:1;pointer-events:auto;visibility:visible}
+ nav a{padding:15px 0;border-bottom:1px solid var(--line);font-size:17px;color:var(--text)}
+ nav a:not(.navph):after{display:none}
+ nav a.navph{display:block;color:var(--acc);font-weight:700;border:0}
+ .hero{grid-template-columns:1fr;min-height:0}
+ .hbg .rp{left:0;width:auto;top:auto;height:42%}
+ .l{padding:44px 20px 10px}h1{font-size:40px}.hero p{font-size:17px}
+ .r{padding:30px 0 56px}.d{width:230px;height:400px}
+ .c{padding:12px 16px}.c b{font-size:21px}.c1{left:3%;top:12%}.c2{right:3%;bottom:10%}
+ section{padding:64px 20px}h2{font-size:32px}
+ .grid3,.gal{grid-template-columns:1fr 1fr}
+ .contact{grid-template-columns:1fr;padding:28px 20px;gap:34px}
+ .contact:before{left:0;top:48%}
+ .stsec{padding-top:0}.stats{padding:36px 26px}
+ footer{padding:44px 20px 28px}
+ .mq{padding:16px 0}
+}
+@media (max-width:600px){
+ .list{grid-template-columns:1fr}
+ .b{padding:16px 26px}
+ .grid4,.grid3,.gal,.steps,.bento{grid-template-columns:1fr}
+ .svc.w{grid-column:auto;min-height:0}.svc.w h3{font-size:22px}
+ .pic{height:230px}.st b{font-size:36px}
+ .stats{grid-template-columns:1fr 1fr;padding:30px 20px}.st{padding-left:16px}
+ .st:nth-child(odd){border:0;padding-left:0}
+ .head{margin-bottom:34px}
+ form{padding:24px 20px}
+ .hero .b{display:block;margin-right:0;text-align:center}
+}
+</style>
+</head>
+<body>
+<div class="prog" id="prog" aria-hidden="true"></div>
+<header id="hdr">
+  <a class="logo" href="#top"><b>D</b>DoorsMaster</a>
+  <nav id="nav">
+    <a href="#catalog">Каталог</a>
+    <a href="#services">Услуги</a>
+    <a href="#works">Работы</a>
+    <a href="#reviews">Отзывы</a>
+    <a href="#faq">Вопросы</a>
+    <a href="#contacts">Контакты</a>
+    <a class="navph" href="tel:+70000000000">+7 (000) 000-00-00</a>
+  </nav>
+  <div class="hr">
+    <a class="ph" href="tel:+70000000000">+7 (000) 000-00-00</a>
+    <button class="tt" id="tt" type="button" aria-label="Переключить тему" title="Светлая / тёмная тема">
+      <svg class="moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+      <svg class="sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+    </button>
+    <button class="burger" id="burger" aria-label="Меню" aria-expanded="false"><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+<div class="hero" id="hero">
+  <div class="hbg" aria-hidden="true"><div class="rp"></div><div class="dots"></div><div class="orb o1"></div><div class="orb o2"></div><div class="hspot" id="hspot"></div></div>
+  <div class="l">
+    <span class="pill"><i></i>Установка дверей под ключ</span>
+    <h1>Качественные двери с <span>установкой за 1 день</span></h1>
+    <p>Бесплатный замер, фиксированная цена в договоре и гарантия 5 лет на монтаж.</p>
+    <div><a class="b" href="#contacts">Рассчитать стоимость</a><a class="b o" href="#catalog">Каталог</a></div>
+    <div class="list"><div>Бесплатный замер</div><div>Гарантия 5 лет</div><div>Монтаж от 2 часов</div><div>Уборка после работ</div></div>
+  </div>
+  <div class="r" id="hr"><div class="dw" id="dw"><div class="d"></div></div><div class="c c1"><b data-n="1200" data-s="+">1200+</b>установленных дверей</div><div class="c c2"><b>★ 4.9</b>рейтинг клиентов</div></div>
+</div>
+
+<div class="mq" aria-label="Наши преимущества"><div class="mqt"><div class="mqg"><span><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>Бесплатный замер</span><span><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Гарантия 5 лет на монтаж</span><span><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Фиксированная цена в договоре</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Монтаж от 2 часов</span><span><svg viewBox="0 0 24 24"><path d="m12 3 1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/></svg>Уборка после работ</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l4 3v4h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>Доставка и подъём на этаж</span><span><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Демонтаж старых дверей</span><span><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Рассрочка</span></div><div class="mqg" aria-hidden="true"><span><svg viewBox="0 0 24 24"><path d="M5 12l4 4 10-10"/></svg>Бесплатный замер</span><span><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg>Гарантия 5 лет на монтаж</span><span><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h6M9 17h6"/></svg>Фиксированная цена в договоре</span><span><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>Монтаж от 2 часов</span><span><svg viewBox="0 0 24 24"><path d="m12 3 1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8z"/></svg>Уборка после работ</span><span><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l4 3v4h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg>Доставка и подъём на этаж</span><span><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></svg>Демонтаж старых дверей</span><span><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="13" rx="2"/><path d="M3 10h18"/></svg>Рассрочка</span></div></div></div>
+
+<section id="catalog">
+ <div class="wrap">
+  <div class="head rv"><span class="tag">Каталог</span><h2>Двери на любой вкус и бюджет</h2><p class="sub">Работаем напрямую с производителями, поэтому предлагаем честные цены и широкий выбор готовых решений.</p></div>
+  <div class="grid4">
+   <article class="card rv spot"><div class="pic"><div class="dr in"></div></div><div class="body"><h3>Входные</h3><p>Стальные утеплённые двери с шумоизоляцией и надёжными замками.</p><div class="price"><small>от</small> 24 900 ₽</div><a class="more" href="#contacts">Подобрать →</a></div></article>
+   <article class="card rv spot" style="--d:.08s"><div class="pic"><div class="dr im"></div></div><div class="body"><h3>Межкомнатные</h3><p>Шпон, эмаль, экошпон и стекло — в любом стиле интерьера.</p><div class="price"><small>от</small> 7 500 ₽</div><a class="more" href="#contacts">Подобрать →</a></div></article>
+   <article class="card rv spot" style="--d:.16s"><div class="pic"><div class="dr hid"></div></div><div class="body"><h3>Скрытые</h3><p>Двери «невидимки» под покраску заподлицо со стеной.</p><div class="price"><small>от</small> 18 900 ₽</div><a class="more" href="#contacts">Подобрать →</a></div></article>
+   <article class="card rv spot" style="--d:.24s"><div class="pic"><div class="dr part"></div></div><div class="body"><h3>Перегородки</h3><p>Стеклянные и раздвижные перегородки для зонирования пространства.</p><div class="price"><small>от</small> 12 500 ₽</div><a class="more" href="#contacts">Подобрать →</a></div></article>
+  </div>
+ </div>
+</section>
+
+<section id="services" class="alt">
+ <div class="wrap">
+  <div class="head rv"><span class="tag">Услуги</span><h2>Всё для двери — под ключ</h2><p class="sub">От первого замера до уборки после монтажа. Один подрядчик, одна цена, одна гарантия.</p></div>
+  <div class="bento">
+   <div class="svc w rv spot"><svg class="deco" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 17 17 3l4 4L7 21H3z"/><path d="M13 7l4 4M8 12l2 2M5 15l2 2"/></svg><span class="chip">Бесплатно</span><div class="ic"><svg viewBox="0 0 24 24"><path d="M3 17 17 3l4 4L7 21H3z"/><path d="M13 7l4 4M8 12l2 2M5 15l2 2"/></svg></div><h3>Бесплатный замер</h3><p>Мастер приедет в удобное время, точно измерит проём и подскажет оптимальную модель.</p></div>
+   <div class="svc rv spot" style="--d:.08s"><div class="ic"><svg viewBox="0 0 24 24"><path d="M2 6h12v10H2zM14 9h4l4 3v4h-8z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/></svg></div><h3>Доставка</h3><p>Привезём двери аккуратно и в срок, поднимем на этаж и проверим комплектацию.</p></div>
+   <div class="svc rv spot" style="--d:.16s"><div class="ic"><svg viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/></svg></div><h3>Демонтаж</h3><p>Бережно снимем старую дверь и коробку, вывезем мусор без повреждения отделки.</p></div>
+   <div class="svc rv spot"><div class="ic"><svg viewBox="0 0 24 24"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.6 2.6-2.4-.6-.6-2.4z"/></svg></div><h3>Монтаж</h3><p>Профессиональная установка от 2 часов: ровно, тихо, с регулировкой и настройкой замков.</p></div>
+   <div class="svc rv spot" style="--d:.08s"><div class="ic"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 5 3.4 8 8 9 4.6-1 8-4 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></div><h3>Гарантия 5 лет</h3><p>Письменная гарантия на монтаж и фурнитуру. Приедем и устраним любой недочёт.</p></div>
+   <div class="svc w rv spot" style="--d:.16s"><svg class="deco" viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg><div class="ic"><svg viewBox="0 0 24 24"><path d="m12 3 1.8 4.7L18.5 9.5l-4.7 1.8L12 16l-1.8-4.7L5.5 9.5l4.7-1.8zM19 15l.8 2.2L22 18l-2.2.8L19 21l-.8-2.2L16 18l2.2-.8z"/></svg></div><h3>Уборка после работ</h3><p>Оставляем чистоту: убираем пыль, пену и упаковку. Вы сразу пользуетесь дверью.</p></div>
+  </div>
+ </div>
+</section>
+
+<section class="stsec">
+ <div class="wrap"><div class="stats rv">
+  <div class="st"><b data-n="1200" data-s="+">1200+</b><span>установленных дверей</span></div>
+  <div class="st"><b data-n="8" data-s=" лет">8 лет</b><span>на рынке</span></div>
+  <div class="st"><b data-n="4.9" data-d="1">4.9</b><span>средняя оценка клиентов</span></div>
+  <div class="st"><b data-n="98" data-s="%">98%</b><span>заказов — без доделок</span></div>
+ </div></div>
+</section>
+
+<section id="steps" class="alt">
+ <div class="wrap">
+  <div class="head rv"><span class="tag">Как мы работаем</span><h2>Пять простых шагов до новой двери</h2></div>
+  <div class="steps">
+   <div class="step rv spot"><h3>Заявка</h3><p>Оставьте телефон — перезвоним за 15 минут и ответим на вопросы.</p></div>
+   <div class="step rv spot" style="--d:.08s"><h3>Замер</h3><p>Мастер приезжает с каталогом образцов и делает бесплатный замер.</p></div>
+   <div class="step rv spot" style="--d:.16s"><h3>Договор</h3><p>Фиксируем модель, сроки и итоговую цену — она не изменится.</p></div>
+   <div class="step rv spot" style="--d:.24s"><h3>Монтаж</h3><p>Доставляем и устанавливаем двери, как правило за один день.</p></div>
+   <div class="step rv spot" style="--d:.32s"><h3>Сдача и гарантия</h3><p>Убираем за собой, показываем работу и выдаём гарантию 5 лет.</p></div>
+  </div>
+ </div>
+</section>
+
+<section id="works">
+ <div class="wrap">
+  <div class="head rv"><span class="tag">Наши работы</span><h2>Примеры установленных дверей</h2><p class="sub">Небольшая подборка объектов — квартиры, дома и офисы.</p></div>
+  <div class="gal">
+   <div class="work rv spot"><div class="scene s1"><span class="pl"></span><div class="dr in"></div></div><div class="cap"><b>Входная дверь, ЖК «Северный»</b><span>Замена за 1 день · 3-комн. квартира</span></div></div>
+   <div class="work rv spot" style="--d:.08s"><div class="scene s2"><span class="pl r2"></span><div class="dr im"></div></div><div class="cap"><b>5 межкомнатных дверей</b><span>Эмаль, белый · квартира 78 м²</span></div></div>
+   <div class="work rv spot" style="--d:.16s"><div class="scene s3"><span class="pl"></span><div class="dr hid"></div></div><div class="cap"><b>Скрытые двери под покраску</b><span>Минимализм · загородный дом</span></div></div>
+   <div class="work rv spot"><div class="scene s4"><span class="pl r2"></span><div class="dr part"></div></div><div class="cap"><b>Стеклянная перегородка</b><span>Зонирование · студия 42 м²</span></div></div>
+   <div class="work rv spot" style="--d:.08s"><div class="scene s5"><span class="pl"></span><div class="dr in"></div></div><div class="cap"><b>Входная дверь с терморазрывом</b><span>Частный дом · шумоизоляция</span></div></div>
+   <div class="work rv spot" style="--d:.16s"><div class="scene s6"><span class="pl r2"></span><div class="dr im"></div></div><div class="cap"><b>Офис: 12 дверей за 2 дня</b><span>Межкомнатные · бизнес-центр</span></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="reviews" class="alt">
+ <div class="wrap">
+  <div class="head rv"><span class="tag">Отзывы</span><h2>Нас рекомендуют клиенты</h2></div>
+  <div class="grid3">
+   <div class="rev rv spot"><div class="stars">★★★★★</div><p>Поставили входную дверь за один день, как и обещали. Мастера аккуратные, всё убрали. Шума с лестницы стало заметно меньше.</p><div class="who"><div class="av">И</div><div><b>Имя Фамилия</b><span>Москва · входная дверь</span></div></div></div>
+   <div class="rev rv spot" style="--d:.08s"><div class="stars">★★★★★</div><p>Заказывали пять межкомнатных дверей. Цена в договоре совпала с итоговой, никаких доплат. Установили ровно, зазоры идеальные.</p><div class="who"><div class="av">А</div><div><b>Имя Фамилия</b><span>Санкт-Петербург · межкомнатные</span></div></div></div>
+   <div class="rev rv spot" style="--d:.16s"><div class="stars">★★★★★</div><p>Выбрали скрытые двери под покраску — выглядит очень стильно. Помогли с подбором и сделали бесплатный замер в тот же день.</p><div class="who"><div class="av">М</div><div><b>Имя Фамилия</b><span>Казань · скрытые двери</span></div></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="faq">
+ <div class="wrap">
+  <div class="head rv"><span class="tag">FAQ</span><h2>Частые вопросы</h2></div>
+  <div class="faq">
+   <div class="q rv open"><button aria-expanded="true">Правда ли, что замер бесплатный?<i></i></button><div class="ans"><div class="ai"><div>Да. Выезд мастера и замер ничего не стоят, даже если вы решите не заказывать у нас.</div></div></div></div>
+   <div class="q rv"><button aria-expanded="false">Сколько времени занимает установка?<i></i></button><div class="ans"><div class="ai"><div>Монтаж одной двери занимает от 2 часов. Квартиру целиком, как правило, устанавливаем за один день.</div></div></div></div>
+   <div class="q rv"><button aria-expanded="false">Что входит в гарантию 5 лет?<i></i></button><div class="ans"><div class="ai"><div>Гарантия распространяется на монтажные работы и регулировку. Если появятся перекосы, скрипы или зазоры — приедем и исправим бесплатно.</div></div></div></div>
+   <div class="q rv"><button aria-expanded="false">Можно ли изменить цену после договора?<i></i></button><div class="ans"><div class="ai"><div>Нет. Стоимость фиксируется в договоре и не меняется по ходу работ.</div></div></div></div>
+   <div class="q rv"><button aria-expanded="false">Вы демонтируете старые двери?<i></i></button><div class="ans"><div class="ai"><div>Да, демонтируем старую дверь и коробку, вывезем мусор и приведём проём в порядок.</div></div></div></div>
+   <div class="q rv"><button aria-expanded="false">Какие способы оплаты доступны?<i></i></button><div class="ans"><div class="ai"><div>Наличные, карта и безналичный расчёт для организаций. Возможна рассрочка — уточняйте у менеджера.</div></div></div></div>
+  </div>
+ </div>
+</section>
+
+<section id="contacts" style="padding-top:0">
+ <div class="wrap">
+  <div class="contact rv" id="cbox">
+   <div>
+    <span class="tag w">Контакты</span>
+    <h2>Рассчитаем стоимость за 15 минут</h2>
+    <p class="sub">Оставьте заявку — менеджер перезвонит, уточнит детали и согласует время бесплатного замера.</p>
+    <div class="info">
+     <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><span><small>Телефон</small><strong><a href="tel:+70000000000">+7 (000) 000-00-00</a></strong></span></div>
+     <div><span class="ic"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span><span><small>Адрес</small><strong>г. Город, ул. Примерная, д. 0</strong></span></div>
+     <div><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><span><small>Режим работы</small><strong>Ежедневно, 09:00–20:00</strong></span></div>
+    </div>
+   </div>
+   <form id="form" novalidate>
+    <div class="f">
+     <h3>Заявка на замер</h3><p class="hint">Перезвоним в течение 15 минут</p>
+     <label for="nm">Ваше имя</label><input id="nm" name="name" type="text" placeholder="Иван" autocomplete="name" required>
+     <label for="tel">Телефон</label><input id="tel" name="phone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" required>
+     <button class="b" type="submit">Оставить заявку</button>
+     <p class="agree">Нажимая кнопку, вы соглашаетесь на обработку персональных данных.</p>
+    </div>
+    <div class="ok"><div class="tick">✓</div><h3>Спасибо, заявка принята!</h3><p>Мы перезвоним вам в ближайшее время и согласуем удобное время замера.</p></div>
+   </form>
+  </div>
+ </div>
+</section>
+</main>
+
+<footer>
+ <div class="fw">
+  <div><div class="logo"><b style="background:var(--blue);border-radius:8px;padding:2px 8px;margin-right:8px">D</b>DoorsMaster</div><p>Продажа и установка входных, межкомнатных и скрытых дверей, перегородок.</p></div>
+  <div class="fc">
+   <div><b>Разделы</b><a href="#catalog">Каталог</a><a href="#services">Услуги</a><a href="#works">Работы</a><a href="#faq">Вопросы</a></div>
+   <div><b>Контакты</b><a href="tel:+70000000000">+7 (000) 000-00-00</a><span>г. Город, ул. Примерная, д. 0</span><span>info@doorsmaster.example</span></div>
+  </div>
+ </div>
+ <div class="copy"><span>© <span id="yr">2026</span> DoorsMaster. Все права защищены.</span><span>Сайт не является публичной офертой.</span></div>
+</footer>
+
+<script>
+(function(){
+ var d=document.documentElement,$=function(s,c){return(c||document).querySelector(s)},$$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+ var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+ var fine=window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+ var raf=window.requestAnimationFrame.bind(window);
+
+ /* ---- theme toggle ---- */
+ var meta=$('meta[name="theme-color"]');
+ function apply(t){d.setAttribute('data-theme',t);if(meta)meta.setAttribute('content',t==='dark'?'#0a0a0b':'#1f5bff')}
+ $('#tt').addEventListener('click',function(){
+  var t=d.getAttribute('data-theme')==='dark'?'light':'dark';
+  try{localStorage.setItem('theme',t)}catch(e){}
+  if(reduce){apply(t);return}
+  if(document.startViewTransition){document.startViewTransition(function(){apply(t)});return}
+  d.classList.add('tt-anim');apply(t);setTimeout(function(){d.classList.remove('tt-anim')},500);
+ });
+ try{matchMedia('(prefers-color-scheme: dark)').addEventListener('change',function(e){var s=null;try{s=localStorage.getItem('theme')}catch(x){}if(s!=='dark'&&s!=='light')apply(e.matches?'dark':'light')})}catch(e){}
+
+ /* ---- burger ---- */
+ var nav=$('#nav'),bg=$('#burger');
+ function tg(o){nav.classList.toggle('open',o);bg.classList.toggle('open',o);bg.setAttribute('aria-expanded',o)}
+ bg.addEventListener('click',function(){tg(!nav.classList.contains('open'))});
+ nav.addEventListener('click',function(e){if(e.target.tagName==='A')tg(false)});
+ $('#yr').textContent=new Date().getFullYear();
+
+ /* ---- header glass state + scroll progress (rAF, passive) ---- */
+ var hdr=$('#hdr'),prog=$('#prog'),tick=false,docH=0,vh=0;
+ function measure(){docH=d.scrollHeight;vh=window.innerHeight}
+ function onScroll(){if(tick)return;tick=true;raf(function(){
+  var y=window.pageYOffset;
+  hdr.classList.toggle('sc',y>8);
+  var max=docH-vh;prog.style.transform='scaleX('+(max>0?Math.min(1,y/max):0)+')';
+  tick=false})}
+ measure();window.addEventListener('scroll',onScroll,{passive:true});
+ window.addEventListener('resize',function(){measure();onScroll()},{passive:true});
+ window.addEventListener('load',function(){measure();onScroll()});onScroll();
+
+ /* ---- counters ---- */
+ function count(el){
+  var n=parseFloat(el.getAttribute('data-n')),s=el.getAttribute('data-s')||'',dec=parseInt(el.getAttribute('data-d')||'0',10);
+  if(reduce){return}
+  var t0=null,dur=1500;
+  function f(ts){if(t0===null)t0=ts;var p=Math.min(1,(ts-t0)/dur),e=1-Math.pow(1-p,4);
+   el.textContent=(n*e).toFixed(dec)+s;if(p<1)raf(f)}
+  el.textContent=(0).toFixed(dec)+s;raf(f);
+ }
+ var cio=('IntersectionObserver' in window)?new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){count(e.target);cio.unobserve(e.target)}})},{threshold:.6}):null;
+ $$('[data-n]').forEach(function(el){if(cio)cio.observe(el)});
+
+ /* ---- reveal on scroll (opacity/transform) ---- */
+ var els=$$('.rv');
+ function done(el){el.classList.remove('rv','in')}
+ if('IntersectionObserver' in window&&!reduce){
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){
+    var el=e.target;el.classList.add('in');io.unobserve(el);
+    var fin=function(ev){if(ev&&(ev.target!==el||ev.propertyName!=='opacity'))return;el.removeEventListener('transitionend',fin);done(el)};
+    el.addEventListener('transitionend',fin);setTimeout(function(){fin()},1800);
+  }})},{threshold:.12,rootMargin:'0px 0px -4% 0px'});
+  els.forEach(function(el){io.observe(el)});
+ }else els.forEach(function(el){el.classList.add('in')});
+
+ /* ---- FAQ accordion (grid-rows height animation) ---- */
+ $$('.q').forEach(function(q){
+  var b=$('button',q);
+  b.addEventListener('click',function(){
+   var o=q.classList.contains('open');
+   $$('.q.open').forEach(function(x){x.classList.remove('open');$('button',x).setAttribute('aria-expanded','false')});
+   if(!o){q.classList.add('open');b.setAttribute('aria-expanded','true')}
+  });
+ });
+
+ /* ---- spotlight glow on cards ---- */
+ $$('.spot').forEach(function(el){var g=document.createElement('span');g.className='glow';g.setAttribute('aria-hidden','true');el.appendChild(g)});
+ if(fine&&!reduce){
+  var tgt=null,px=0,py=0,sr=0;
+  document.addEventListener('pointermove',function(e){
+   var s=e.target.closest?e.target.closest('.spot'):null;if(!s)return;
+   tgt=s;px=e.clientX;py=e.clientY;
+   if(!sr)sr=raf(function(){var r=tgt.getBoundingClientRect();tgt.style.setProperty('--mx',(px-r.left)+'px');tgt.style.setProperty('--my',(py-r.top)+'px');sr=0});
+  },{passive:true});
+
+  /* ---- magnetic buttons ---- */
+  $$('.b').forEach(function(b){
+   var mr=0,mx=0,my=0;
+   b.addEventListener('pointermove',function(e){
+    mx=e.clientX;my=e.clientY;
+    if(!mr)mr=raf(function(){var r=b.getBoundingClientRect();
+     var dx=(mx-(r.left+r.width/2))/r.width,dy=(my-(r.top+r.height/2))/r.height;
+     b.style.setProperty('--tx',(dx*14).toFixed(1)+'px');b.style.setProperty('--ty',(dy*8).toFixed(1)+'px');mr=0});
+   },{passive:true});
+   b.addEventListener('pointerleave',function(){b.style.setProperty('--tx','0px');b.style.setProperty('--ty','0px')});
+  });
+
+  /* ---- hero: cursor spotlight (lerp) + door tilt ---- */
+  var hero=$('#hero'),hs=$('#hspot'),dw=$('#dw'),hr=$('#hr');
+  if(hero&&hs){
+   var hx=0,hy=0,cx=0,cy=0,run=false,rx=0,ry=0,hrect=null,rrect=null;
+   function loop(){
+    cx+=(hx-cx)*.12;cy+=(hy-cy)*.12;
+    hs.style.transform='translate3d('+cx.toFixed(1)+'px,'+cy.toFixed(1)+'px,0)';
+    if(Math.abs(hx-cx)+Math.abs(hy-cy)>.5)raf(loop);else run=false;
+   }
+   hero.addEventListener('pointerenter',function(){hrect=hero.getBoundingClientRect();rrect=hr.getBoundingClientRect();hero.classList.add('hov')});
+   hero.addEventListener('pointerleave',function(){hero.classList.remove('hov');dw.style.setProperty('--rx','0deg');dw.style.setProperty('--ry','0deg')});
+   hero.addEventListener('pointermove',function(e){
+    if(!hrect){hrect=hero.getBoundingClientRect();rrect=hr.getBoundingClientRect()}
+    hx=e.clientX-hrect.left;hy=e.clientY-hrect.top;
+    var nx=(e.clientX-(rrect.left+rrect.width/2))/rrect.width,ny=(e.clientY-(rrect.top+rrect.height/2))/rrect.height;
+    ry=Math.max(-1,Math.min(1,nx))*7;rx=Math.max(-1,Math.min(1,ny))*-5;
+    if(!run){run=true;raf(loop)}
+    raf(function(){dw.style.setProperty('--ry',ry.toFixed(2)+'deg');dw.style.setProperty('--rx',rx.toFixed(2)+'deg')});
+   },{passive:true});
+   window.addEventListener('resize',function(){hrect=null},{passive:true});
+   window.addEventListener('scroll',function(){hrect=null},{passive:true});
+  }
+ }
+
+ /* ---- phone mask + form ---- */
+ var tel=$('#tel');
+ tel.addEventListener('input',function(){
+  var v=tel.value.replace(/\D/g,'');if(v[0]==='8'||v[0]==='7')v=v.slice(1);v=v.slice(0,10);
+  var s='+7';if(v.length)s+=' ('+v.slice(0,3);if(v.length>=3)s+=') '+v.slice(3,6);if(v.length>=6)s+='-'+v.slice(6,8);if(v.length>=8)s+='-'+v.slice(8,10);
+  tel.value=v.length?s:'';
+ });
+ $('#form').addEventListener('submit',function(e){
+  e.preventDefault();
+  var n=$('#nm'),ok=true;
+  [n,tel].forEach(function(i){i.style.borderColor=''});
+  if(!n.value.trim()){n.style.borderColor='#e5484d';ok=false}
+  if(tel.value.replace(/\D/g,'').length<11){tel.style.borderColor='#e5484d';ok=false}
+  if(!ok)return;
+  $('#cbox').classList.add('sent');
+ });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,1784 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>СОЧНО — крафтовая бургерная | Бургеры из мраморной говядины</title>
+  <meta name="description" content="СОЧНО — крафтовая бургерная. Мраморная говядина, выдержанный чеддер, бриошь из собственной пекарни и фирменный соус. Доставка за 30 минут.">
+  <meta name="theme-color" content="#0b0806">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23ff7a1a'/%3E%3Ctext x='16' y='23' font-family='Arial' font-weight='900' font-size='19' text-anchor='middle' fill='%230b0806'%3E%D0%A1%3C/text%3E%3C/svg%3E">
+  <link rel="stylesheet" href="../assets/css/fonts.css">
+  <style>
+/* ==========================================================
+   СОЧНО — бургерная. Стили
+   ========================================================== */
+:root {
+  --bg: #0b0806;
+  --bg-2: #140d09;
+  --ink: #f7efe4;
+  --muted: #b9a996;
+  --dim: #7d6d5c;
+  --accent: #ff7a1a;
+  --amber: #ffb627;
+  --red: #ff3d2e;
+  --line: rgba(255, 220, 180, 0.12);
+  --glass: rgba(26, 17, 12, 0.62);
+  --radius: 22px;
+  --pad: clamp(20px, 6vw, 96px);
+  --f-display: 'Unbounded', system-ui, sans-serif;
+  --f-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+html.lenis, html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-stopped { overflow: hidden; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--f-body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+body.loading { overflow: hidden; }
+a { color: inherit; text-decoration: none; }
+img { max-width: 100%; display: block; }
+ul { margin: 0; padding: 0; list-style: none; }
+::selection { background: var(--accent); color: #140a03; }
+
+/* ---------- Фоновые слои ---------- */
+.bg-base {
+  position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(255, 122, 26, 0.10), transparent 60%),
+    radial-gradient(900px 600px at -10% 110%, rgba(255, 61, 46, 0.08), transparent 60%),
+    linear-gradient(180deg, #0d0907 0%, #0a0705 100%);
+}
+.bg-glow {
+  position: fixed; left: 0; top: 0; z-index: 0; pointer-events: none;
+  width: 900px; height: 900px; margin: -450px 0 0 -450px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 128, 30, 0.30) 0%, rgba(255, 90, 20, 0.12) 35%, transparent 68%);
+  filter: blur(10px);
+  will-change: transform, opacity;
+  transform: translate3d(70vw, 50vh, 0);
+}
+#scene {
+  position: fixed; inset: 0; z-index: 1;
+  width: 100vw; height: 100vh;
+  display: block; pointer-events: none;
+}
+#labels { position: fixed; inset: 0; z-index: 3; pointer-events: none; opacity: 0; }
+
+.grain {
+  position: fixed; inset: -100%; z-index: 60; pointer-events: none;
+  width: 300%; height: 300%;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1.4 -0.2'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  animation: grain 1.2s steps(6) infinite;
+}
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  20% { transform: translate(-3%, 2%); }
+  40% { transform: translate(2%, -4%); }
+  60% { transform: translate(-4%, -1%); }
+  80% { transform: translate(3%, 3%); }
+  100% { transform: translate(0, 0); }
+}
+
+.progress { position: fixed; left: 0; top: 0; right: 0; height: 3px; z-index: 70; pointer-events: none; }
+.progress span {
+  display: block; height: 100%; width: 100%;
+  transform-origin: 0 50%; transform: scaleX(0);
+  background: linear-gradient(90deg, var(--amber), var(--accent), var(--red));
+  box-shadow: 0 0 12px rgba(255, 122, 26, 0.8);
+}
+
+.cursor-glow {
+  position: fixed; left: 0; top: 0; z-index: 2; pointer-events: none;
+  width: 420px; height: 420px; margin: -210px 0 0 -210px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 170, 80, 0.10), transparent 65%);
+  opacity: 0; transition: opacity .4s;
+}
+body.has-mouse .cursor-glow { opacity: 1; }
+
+/* ---------- Прелоадер ---------- */
+#preloader {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-items: center;
+  background: #0a0705;
+}
+.pre-inner { width: min(360px, 80vw); }
+.pre-logo { font-family: var(--f-display); font-weight: 900; font-size: 56px; letter-spacing: -0.02em; line-height: 1; margin-bottom: 26px; }
+.pre-bar { height: 2px; background: rgba(255, 255, 255, 0.08); overflow: hidden; border-radius: 2px; }
+.pre-bar span { display: block; height: 100%; width: 0; background: linear-gradient(90deg, var(--amber), var(--red)); }
+.pre-meta { display: flex; justify-content: space-between; margin-top: 12px; color: var(--muted); font-size: 13px; letter-spacing: 0.04em; }
+
+/* ---------- Навигация ---------- */
+.nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between; gap: 24px;
+  padding: 18px var(--pad);
+  transition: background .4s, padding .4s, border-color .4s;
+  border-bottom: 1px solid transparent;
+}
+.nav.scrolled {
+  background: rgba(11, 8, 6, 0.6);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-color: var(--line);
+  padding-top: 12px; padding-bottom: 12px;
+}
+.logo { font-family: var(--f-display); font-weight: 900; font-size: 22px; letter-spacing: -0.01em; display: inline-flex; align-items: flex-start; }
+.dot { display: inline-block; width: .32em; height: .32em; border-radius: 50%; background: var(--accent); margin-left: .12em; margin-top: .12em; box-shadow: 0 0 14px var(--accent); }
+.nav-links { display: flex; gap: 6px; padding: 6px; border: 1px solid var(--line); border-radius: 999px; background: rgba(20, 13, 9, 0.45); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+.nav-links a { padding: 8px 16px; border-radius: 999px; font-size: 14px; font-weight: 600; color: var(--muted); transition: color .25s, background .25s; }
+.nav-links a:hover, .nav-links a.active { color: var(--ink); background: rgba(255, 255, 255, 0.07); }
+
+/* ---------- Кнопки ---------- */
+.btn {
+  position: relative; display: inline-flex; align-items: center; gap: 12px;
+  padding: 17px 30px; border-radius: 999px;
+  font-family: var(--f-body); font-weight: 800; font-size: 16px; letter-spacing: 0.01em;
+  cursor: pointer; border: 0; overflow: hidden; isolation: isolate;
+  transition: box-shadow .35s;
+  will-change: transform;
+}
+.btn span, .btn .arrow { position: relative; z-index: 2; display: inline-block; font-style: normal; }
+.btn .arrow { transition: transform .35s; }
+.btn:hover .arrow { transform: translateX(5px); }
+.btn-primary {
+  color: #1a0b02;
+  background: linear-gradient(135deg, #ffc044 0%, #ff8a1f 45%, #ff4d1a 100%);
+  box-shadow: 0 10px 40px -10px rgba(255, 110, 30, 0.75), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+.btn-primary::after {
+  content: ''; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.55) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .8s cubic-bezier(.2, .8, .2, 1);
+}
+.btn-primary:hover::after { transform: translateX(120%); }
+.btn-primary:hover { box-shadow: 0 14px 60px -8px rgba(255, 110, 30, 0.95), inset 0 1px 0 rgba(255, 255, 255, 0.4); }
+.btn-ghost { color: var(--ink); background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 230, 200, 0.18); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+.btn-ghost:hover { background: rgba(255, 255, 255, 0.08); }
+.btn-small { padding: 11px 22px; font-size: 14px; }
+.btn-xl { padding: 22px 44px; font-size: 19px; }
+
+/* ---------- Типографика ---------- */
+.sec { position: relative; z-index: 2; min-height: 100vh; padding: 120px var(--pad); display: flex; align-items: center; }
+.col { position: relative; max-width: min(560px, 44vw); }
+.col--right { margin-left: auto; }
+.eyebrow { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin-bottom: 22px; }
+.eyebrow .num { color: var(--accent); }
+.pill { padding: 8px 16px 8px 12px; border: 1px solid var(--line); border-radius: 999px; background: rgba(255, 255, 255, 0.03); letter-spacing: 0.08em; }
+.pulse { width: 8px; height: 8px; border-radius: 50%; background: #5ee36b; box-shadow: 0 0 0 0 rgba(94, 227, 107, .6); animation: pulse 2s infinite; }
+@keyframes pulse { 70% { box-shadow: 0 0 0 10px rgba(94, 227, 107, 0); } 100% { box-shadow: 0 0 0 0 rgba(94, 227, 107, 0); } }
+
+.h1, .h2, .h3 { font-family: var(--f-display); font-weight: 800; letter-spacing: -0.035em; margin: 0; }
+.h1 { font-size: clamp(38px, 4.4vw, 76px); line-height: 1.02; margin-bottom: 26px; font-weight: 900; }
+.h2 { font-size: clamp(32px, 4vw, 62px); line-height: 1.06; margin-bottom: 22px; }
+.h2--xl { font-size: clamp(36px, 4.8vw, 76px); }
+.h3 { font-size: clamp(26px, 2.6vw, 40px); line-height: 1.1; margin-bottom: 18px; }
+.lead { color: var(--muted); font-size: clamp(16px, 1.25vw, 19px); max-width: 520px; margin: 0 0 32px; }
+.accent { position: relative; color: var(--accent); display: inline-block; text-shadow: 0 0 40px rgba(255, 122, 26, 0.35); }
+.accent::after {
+  content: ''; position: absolute; left: 0; right: 0; bottom: 0.02em; height: 0.07em; border-radius: 1em;
+  background: linear-gradient(90deg, var(--amber), var(--accent), var(--red));
+  transform: scaleX(0); transform-origin: 0 50%;
+  transition: transform 1.1s cubic-bezier(.7, 0, .2, 1) .5s;
+}
+.accent.in::after { transform: scaleX(1); }
+
+/* split text */
+.w { display: inline-block; overflow: hidden; vertical-align: top; padding: 0.08em 0.03em 0.12em; margin: -0.08em -0.03em -0.12em; }
+.ch { display: inline-block; will-change: transform; transform-origin: 0% 100%; }
+
+/* ---------- HERO ---------- */
+.hero { padding-top: 140px; }
+.cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-bottom: 42px; }
+.hero-meta { display: flex; gap: 34px; flex-wrap: wrap; }
+.hero-meta li { display: flex; flex-direction: column; line-height: 1.25; }
+.hero-meta b { font-family: var(--f-display); font-size: 20px; font-weight: 700; }
+.hero-meta span { color: var(--dim); font-size: 13px; }
+.scroll-hint {
+  position: absolute; left: 50%; bottom: 34px; transform: translateX(-50%);
+  display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: 13px; letter-spacing: 0.06em; white-space: nowrap;
+}
+.mouse { width: 24px; height: 38px; border: 2px solid rgba(255, 230, 200, 0.35); border-radius: 14px; position: relative; }
+.mouse i { position: absolute; left: 50%; top: 7px; width: 3px; height: 8px; margin-left: -1.5px; border-radius: 2px; background: var(--accent); animation: wheel 1.6s infinite; }
+@keyframes wheel { 0% { opacity: 0; transform: translateY(-3px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(12px); } }
+.hero-fallback, .hero-fallback.art { display: none; }
+.no-webgl .hero-fallback, .no-webgl .hero-fallback.art { display: flex; position: absolute; right: 12vw; top: 50%; transform: translateY(-50%) scale(1.8); }
+
+/* ---------- ABOUT ---------- */
+.stats { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.stat { padding: 20px 22px; border-radius: 18px; border: 1px solid var(--line); background: var(--glass); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
+.stat b { display: block; font-family: var(--f-display); font-size: clamp(26px, 2.4vw, 36px); font-weight: 800; letter-spacing: -0.03em; line-height: 1.1; color: var(--ink); }
+.stat > span { color: var(--muted); font-size: 14px; line-height: 1.35; display: block; margin-top: 6px; }
+
+/* ---------- MARQUEE ---------- */
+.marquee { position: relative; z-index: 2; padding: 40px 0; overflow: hidden; }
+.marquee-row { overflow: hidden; white-space: nowrap; }
+.marquee-track { display: inline-flex; align-items: center; gap: 34px; padding-right: 34px; will-change: transform; }
+.marquee-track span { font-family: var(--f-display); font-weight: 800; text-transform: uppercase; letter-spacing: -0.02em; }
+.row-a { transform: rotate(-2.5deg); background: linear-gradient(90deg, #ff8a1f, #ff4d1a); color: #1b0a02; padding: 16px 0; box-shadow: 0 20px 60px -20px rgba(255, 90, 20, 0.6); }
+.row-a span { font-size: clamp(24px, 3vw, 44px); }
+.row-a i { font-style: normal; font-size: 22px; }
+.row-b { transform: rotate(1.5deg); margin-top: -6px; background: rgba(18, 12, 8, 0.85); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 14px 0; backdrop-filter: blur(8px); }
+.row-b span { font-size: clamp(18px, 2vw, 28px); color: transparent; -webkit-text-stroke: 1.2px rgba(255, 220, 180, 0.6); }
+.row-b i { font-style: normal; color: var(--accent); font-size: 12px; }
+
+/* ---------- ANATOMY ---------- */
+.anatomy { min-height: 260vh; align-items: flex-start; padding-top: 18vh; }
+.anatomy-intro { max-width: min(470px, 34vw); }
+
+/* Подписи слоёв */
+.lbl { position: absolute; left: 0; top: 0; display: flex; align-items: center; will-change: transform, opacity; }
+.lbl--l { flex-direction: row-reverse; }
+.lbl-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--amber); box-shadow: 0 0 0 4px rgba(255, 182, 39, 0.18), 0 0 14px var(--amber); flex: none; }
+.lbl-line { width: 54px; height: 1px; flex: none; background: linear-gradient(90deg, rgba(255, 182, 39, 0.9), rgba(255, 182, 39, 0.15)); }
+.lbl--l .lbl-line { background: linear-gradient(270deg, rgba(255, 182, 39, 0.9), rgba(255, 182, 39, 0.15)); }
+.lbl-body {
+  padding: 9px 14px; border-radius: 14px; max-width: 250px;
+  background: rgba(20, 13, 9, 0.72); border: 1px solid rgba(255, 210, 160, 0.14);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  line-height: 1.25;
+}
+.lbl--l .lbl-body { text-align: right; }
+.lbl-body b { display: block; font-family: var(--f-display); font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+.lbl-body span { display: block; color: var(--muted); font-size: 12px; margin-top: 3px; }
+.lbl-body em { display: block; font-style: normal; color: var(--amber); font-size: 11px; font-weight: 700; letter-spacing: 0.06em; margin-top: 4px; }
+.lbl-total {
+  position: absolute; left: 50%; bottom: 26px; transform: translateX(-50%);
+  padding: 10px 20px; border-radius: 999px; white-space: nowrap;
+  background: rgba(20, 13, 9, 0.75); border: 1px solid rgba(255, 210, 160, 0.16);
+  backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+  font-size: 13px; color: var(--muted);
+}
+.lbl-total b { color: var(--ink); font-family: var(--f-display); font-weight: 700; }
+
+/* ---------- SPOTLIGHT ---------- */
+.spot { min-height: 170vh; display: block; padding-top: 0; padding-bottom: 0; }
+.spot-stick { position: sticky; top: 0; height: 100vh; display: flex; align-items: center; perspective: 1200px; }
+.spot[data-side='right'] .spot-stick { justify-content: flex-end; }
+.panel {
+  position: relative; max-width: 470px; padding: 40px 40px 36px; border-radius: 28px;
+  background: linear-gradient(160deg, rgba(34, 22, 15, 0.78), rgba(18, 12, 8, 0.66));
+  border: 1px solid rgba(255, 210, 160, 0.13);
+  backdrop-filter: blur(16px) saturate(130%); -webkit-backdrop-filter: blur(16px) saturate(130%);
+  box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.8);
+  overflow: hidden;
+}
+.panel::before {
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(420px circle at var(--mx, 80%) var(--my, 0%), rgba(255, 140, 40, 0.16), transparent 45%);
+}
+.panel-num { position: absolute; right: 26px; top: 10px; font-family: var(--f-display); font-weight: 900; font-size: 92px; line-height: 1; color: transparent; -webkit-text-stroke: 1px rgba(255, 180, 100, 0.22); }
+.panel p { color: var(--muted); margin: 0 0 24px; }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chips li { padding: 7px 14px; border-radius: 999px; font-size: 13px; font-weight: 700; color: #ffd9a8; background: rgba(255, 122, 26, 0.1); border: 1px solid rgba(255, 122, 26, 0.25); }
+
+/* ---------- MENU ---------- */
+.menu { flex-direction: column; align-items: stretch; justify-content: center; padding-top: 140px; padding-bottom: 140px; }
+.menu-head { text-align: center; max-width: 760px; margin: 0 auto 56px; }
+.menu-head .lead { margin-left: auto; margin-right: auto; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 22px; perspective: 1200px; }
+.card {
+  --mx: 50%; --my: 50%;
+  position: relative; display: flex; flex-direction: column; padding: 26px 24px 22px; border-radius: var(--radius);
+  background: linear-gradient(170deg, rgba(36, 24, 16, 0.85), rgba(16, 11, 8, 0.85));
+  border: 1px solid rgba(255, 210, 160, 0.1);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  transform-style: preserve-3d; will-change: transform;
+  transition: border-color .4s, box-shadow .4s;
+}
+.card::before { /* светящаяся граница */
+  content: ''; position: absolute; inset: -1px; border-radius: inherit; padding: 1.5px; pointer-events: none;
+  background: conic-gradient(from var(--ang, 0deg), transparent 0 55%, rgba(255, 182, 39, 0.9) 70%, #ff5a1f 80%, transparent 92%);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  opacity: 0.25; transition: opacity .4s;
+  animation: spin 5s linear infinite;
+}
+.card::after { /* прожектор за курсором */
+  content: ''; position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  background: radial-gradient(360px circle at var(--mx) var(--my), rgba(255, 140, 40, 0.18), transparent 45%);
+  opacity: 0; transition: opacity .4s;
+}
+.card:hover::before { opacity: 1; }
+.card:hover::after { opacity: 1; }
+.card:hover { box-shadow: 0 30px 80px -30px rgba(255, 100, 20, 0.55); }
+@property --ang { syntax: '<angle>'; inherits: false; initial-value: 0deg; }
+@keyframes spin { to { --ang: 360deg; } }
+.card h3 { font-family: var(--f-display); font-weight: 700; font-size: 20px; letter-spacing: -0.02em; margin: 6px 0 8px; transform: translateZ(30px); }
+.card p { color: var(--muted); font-size: 14px; line-height: 1.5; margin: 0 0 14px; min-height: 63px; }
+.card-meta { color: var(--dim); font-size: 12px; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+.card-foot { margin-top: auto; display: flex; align-items: center; justify-content: space-between; transform: translateZ(25px); }
+.price { font-family: var(--f-display); font-size: 24px; font-weight: 800; letter-spacing: -0.02em; }
+.add {
+  width: 46px; height: 46px; border-radius: 50%; border: 0; cursor: pointer;
+  font-size: 24px; font-weight: 600; line-height: 1; color: #1a0b02;
+  background: linear-gradient(135deg, #ffc044, #ff6a1a);
+  box-shadow: 0 8px 24px -6px rgba(255, 110, 30, 0.7);
+  transition: transform .3s cubic-bezier(.3, 1.6, .5, 1);
+}
+.add:hover { transform: scale(1.12) rotate(90deg); }
+.add.done { background: linear-gradient(135deg, #8df08f, #3fbf5a); }
+.tag { position: absolute; top: 18px; left: 18px; z-index: 2; padding: 5px 11px; border-radius: 999px; font-size: 11px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #1b0a02; background: var(--amber); }
+.tag--new { background: #8be3ff; }
+.tag--hot { background: var(--red); color: #fff; }
+
+/* CSS-иллюстрация бургера */
+.art { position: relative; height: 170px; display: flex; flex-direction: column; align-items: center; justify-content: center; transform: translateZ(50px); margin-bottom: 8px; }
+.art i { --i: 0; display: block; flex: none; width: 150px; margin-top: -3px; transition: transform .6s cubic-bezier(.2, .9, .2, 1); filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.35)); }
+.card:hover .art i { transform: translateY(calc((var(--i) - 3.5) * 5px)); }
+.art i:nth-child(1) { --i: 0; } .art i:nth-child(2) { --i: 1; } .art i:nth-child(3) { --i: 2; } .art i:nth-child(4) { --i: 3; }
+.art i:nth-child(5) { --i: 4; } .art i:nth-child(6) { --i: 5; } .art i:nth-child(7) { --i: 6; } .art i:nth-child(8) { --i: 7; }
+.l-bun-top {
+  height: 56px; width: 150px !important; border-radius: 80px 80px 14px 14px / 60px 60px 14px 14px;
+  background:
+    radial-gradient(ellipse 3px 2px at 30% 30%, #fff1cf 98%, transparent) ,
+    radial-gradient(ellipse 3px 2px at 50% 18%, #fff1cf 98%, transparent),
+    radial-gradient(ellipse 3px 2px at 68% 32%, #fff1cf 98%, transparent),
+    radial-gradient(ellipse 3px 2px at 40% 48%, #fff1cf 98%, transparent),
+    radial-gradient(ellipse 3px 2px at 60% 52%, #fff1cf 98%, transparent),
+    radial-gradient(ellipse 3px 2px at 22% 55%, #fff1cf 98%, transparent),
+    radial-gradient(ellipse 3px 2px at 80% 56%, #fff1cf 98%, transparent),
+    radial-gradient(120% 90% at 40% 15%, #e9a24c 0%, #c8702a 55%, #9c4e18 100%);
+  box-shadow: inset 0 -6px 0 rgba(255, 220, 160, 0.35);
+}
+.l-bun-top--dark { background-color: #7a3c14; filter: brightness(0.82) drop-shadow(0 4px 6px rgba(0,0,0,.35)); }
+.l-bun-bottom { height: 30px; border-radius: 10px 10px 40px 40px / 10px 10px 26px 26px; background: linear-gradient(180deg, #f2cf8c 0 22%, #d48a3c 30%, #a65a1f 100%); }
+.l-patty { height: 26px; width: 160px !important; border-radius: 14px; background: radial-gradient(circle at 30% 30%, #7a3e1c, #4a220e 60%, #2e1408); box-shadow: inset 0 2px 0 rgba(255, 170, 110, 0.18); }
+.l-cheese { height: 12px; width: 166px !important; background: linear-gradient(180deg, #ffd052, #f5a01d); clip-path: polygon(0 0, 100% 0, 100% 60%, 92% 100%, 84% 60%, 20% 60%, 12% 100%, 4% 60%, 0 60%); }
+.l-cheese--smoked { background: linear-gradient(180deg, #f0a43a, #c9701a); }
+.l-cheese--pepper { background: radial-gradient(circle at 20% 40%, #c33 1px, transparent 2px) 0 0/12px 8px, linear-gradient(180deg, #fff1b8, #f2d47a); }
+.l-lettuce { height: 13px; width: 168px !important; border-radius: 50%; background: linear-gradient(180deg, #a6dc5a, #3f8f24); clip-path: polygon(0 40%, 6% 0, 12% 50%, 18% 5%, 25% 55%, 32% 0, 38% 50%, 45% 5%, 52% 55%, 58% 0, 65% 50%, 72% 5%, 78% 55%, 85% 0, 92% 50%, 100% 30%, 100% 100%, 0 100%); }
+.l-tomato { height: 10px; width: 140px !important; border-radius: 6px; background: linear-gradient(180deg, #ff5a3c, #c51d12); }
+.l-pickle { height: 8px; width: 132px !important; border-radius: 6px; background: repeating-linear-gradient(90deg, #6f9a2a 0 26px, transparent 26px 32px); }
+.l-onion { height: 9px; width: 146px !important; border-radius: 6px; background: repeating-linear-gradient(90deg, #e9b8d8 0 18px, #b65f99 18px 21px, transparent 21px 26px); }
+.l-bacon { height: 10px; width: 158px !important; border-radius: 4px; background: repeating-linear-gradient(90deg, #b8332a 0 10px, #f0b3a0 10px 14px); clip-path: polygon(0 20%, 10% 0, 20% 30%, 30% 0, 40% 30%, 50% 0, 60% 30%, 70% 0, 80% 30%, 90% 0, 100% 20%, 100% 100%, 0 100%); }
+.l-jalapeno { height: 9px; width: 140px !important; background: radial-gradient(circle, #e8f2a0 0 3px, #3e8b25 3.5px 7px, transparent 7.5px) 0 50% / 20px 9px repeat-x; }
+.l-sauce { height: 7px; width: 152px !important; border-radius: 0 0 50% 50% / 0 0 100% 100%; background: #ff6a2a; }
+.l-sauce--mustard { background: #f2c230; }
+.l-sauce--bbq { background: #7a2410; }
+.l-sauce--hot { background: #e8301c; }
+.art--big i { width: 150px; }
+
+/* ---------- FINAL ---------- */
+.final { min-height: 100vh; }
+.chips--row { margin-top: -8px; }
+
+/* ---------- FOOTER ---------- */
+.footer { position: relative; z-index: 2; padding: 80px var(--pad) 30px; border-top: 1px solid var(--line); background: linear-gradient(180deg, rgba(11, 8, 6, 0.6), #0a0705 40%); overflow: hidden; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1.2fr; gap: 40px; }
+.footer h4 { margin: 0 0 12px; font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--dim); }
+.footer p { margin: 0; color: var(--muted); font-size: 15px; }
+.footer a:hover { color: var(--accent); }
+.foot-brand .logo { font-size: 32px; margin-bottom: 12px; }
+.foot-giant { font-family: var(--f-display); font-weight: 900; font-size: 20vw; line-height: 0.85; letter-spacing: -0.06em; text-align: center; margin: 50px 0 10px; color: transparent; background: linear-gradient(180deg, rgba(255, 140, 50, 0.2), rgba(255, 122, 26, 0.05) 60%, transparent 90%); -webkit-background-clip: text; background-clip: text; user-select: none; }
+.foot-bottom { display: flex; justify-content: space-between; gap: 20px; flex-wrap: wrap; color: var(--dim); font-size: 13px; }
+
+/* ---------- Адаптив ---------- */
+@media (max-width: 1100px) {
+  .cards { grid-template-columns: repeat(2, 1fr); }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 820px) {
+  body { font-size: 16px; }
+  .nav-links { display: none; }
+  .nav { padding: 14px 18px; }
+  .sec { padding: 96px 20px; }
+  .col, .col--right { max-width: 100%; margin-left: 0; }
+  .hero { align-items: flex-start; padding-top: 110px; }
+  .hero .lead { max-width: 100%; }
+  .hero-meta { gap: 20px; }
+  .hero-meta { display: none; }
+  .scroll-hint { bottom: 20px; }
+  .about { align-items: flex-end; }
+  .about .col { padding: 22px; border-radius: 22px; background: rgba(14, 9, 6, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); }
+  .stats { gap: 10px; }
+  .stat { padding: 14px; }
+  .anatomy-intro { max-width: 100%; }
+  .spot-stick { align-items: flex-end; padding-bottom: 28px; }
+  .panel { padding: 26px 24px; border-radius: 22px; }
+  .panel-num { font-size: 64px; }
+  .cards { grid-template-columns: 1fr; }
+  .card p { min-height: 0; }
+  .final { align-items: flex-start; padding-top: 110px; }
+  .lbl-body { max-width: 136px; padding: 6px 10px; }
+  .lbl-body span { display: none; }
+  .lbl-body b { font-size: 0; white-space: nowrap; }
+  .lbl-body b::after { content: attr(data-short); font-size: 11px; }
+  .hero p, .hero h1 { text-shadow: 0 2px 18px rgba(11, 8, 6, 0.85); }
+  .lbl-line { width: 12px; }
+  .foot-grid { grid-template-columns: 1fr; gap: 26px; }
+  .cursor-glow { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .grain, .card::before, .mouse i { animation: none; }
+}
+
+</style>
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "../assets/vendor/three/build/three.module.js",
+      "three/addons/": "../assets/vendor/three/examples/jsm/"
+    }
+  }
+  </script>
+</head>
+<body>
+
+  <!-- Прелоадер -->
+  <div id="preloader" aria-hidden="true">
+    <div class="pre-inner">
+      <div class="pre-logo">СОЧНО<span class="dot"></span></div>
+      <div class="pre-bar"><span></span></div>
+      <div class="pre-meta"><span class="pre-text">Разогреваем гриль…</span><span class="pre-num">0%</span></div>
+    </div>
+  </div>
+
+  <!-- Фоновые слои -->
+  <div class="bg-base" aria-hidden="true"></div>
+  <div id="glow" class="bg-glow" aria-hidden="true"></div>
+  <canvas id="scene" aria-label="3D-бургер"></canvas>
+  <div id="labels" aria-hidden="true"></div>
+  <div class="grain" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+  <div class="cursor-glow" aria-hidden="true"></div>
+
+  <!-- Навигация -->
+  <header class="nav">
+    <a href="#hero" class="logo" aria-label="СОЧНО — на главную">СОЧНО<span class="dot"></span></a>
+    <nav class="nav-links">
+      <a href="#anatomy">Анатомия</a>
+      <a href="#spot-beef">Ингредиенты</a>
+      <a href="#menu">Меню</a>
+      <a href="#contacts">Контакты</a>
+    </nav>
+    <a href="#final" class="btn btn-small btn-primary magnetic"><span>Заказать</span></a>
+  </header>
+
+  <main>
+    <!-- 1. HERO -->
+    <section id="hero" class="sec hero">
+      <div class="col">
+        <div class="eyebrow pill" data-reveal><span class="pulse"></span>Крафтовая бургерная · Алматы</div>
+        <h1 class="h1" data-split="hero">Идеальный бургер <span class="accent">собирается</span> по&nbsp;слоям</h1>
+        <p class="lead" data-reveal>Мраморная говядина, тающий чеддер, бриошь из собственной пекарни и соус по секретному рецепту. Прокрутите вниз — и бургер соберётся прямо у вас на экране.</p>
+        <div class="cta-row" data-reveal>
+          <a href="#menu" class="btn btn-primary magnetic"><span>Смотреть меню</span><i class="arrow">→</i></a>
+          <a href="#anatomy" class="btn btn-ghost magnetic"><span>Как мы готовим</span></a>
+        </div>
+        <ul class="hero-meta" data-reveal>
+          <li><b>4.9 ★</b><span>рейтинг гостей</span></li>
+          <li><b>30 мин</b><span>доставка</span></li>
+          <li><b>11:00–02:00</b><span>ежедневно</span></li>
+        </ul>
+      </div>
+      <div class="hero-fallback art art--big" aria-hidden="true">
+        <i class="l-bun-top"></i><i class="l-sauce"></i><i class="l-cheese"></i><i class="l-patty"></i><i class="l-tomato"></i><i class="l-lettuce"></i><i class="l-bun-bottom"></i>
+      </div>
+      <div class="scroll-hint"><span class="mouse"><i></i></span>Листайте, чтобы собрать бургер</div>
+    </section>
+
+    <!-- 2. ФИЛОСОФИЯ -->
+    <section id="about" class="sec about">
+      <div class="col">
+        <div class="eyebrow" data-reveal><span class="num">01</span> — Философия</div>
+        <h2 class="h2" data-split>Десять слоёв. Один <span class="accent">идеальный</span> укус.</h2>
+        <p class="lead" data-reveal>Мы не прячем начинку. Каждый слой — от поджаренной булочки до капли соуса — продуман так, чтобы вкус раскрывался постепенно, а бургер не разваливался в руках.</p>
+        <div class="stats">
+          <div class="stat" data-reveal><b><span data-count="200">0</span> г</b><span>мраморной говядины в котлете</span></div>
+          <div class="stat" data-reveal><b><span data-count="10">0</span></b><span>слоёв в фирменном бургере</span></div>
+          <div class="stat" data-reveal><b><span data-count="7">0</span> мин</b><span>от гриля до вашего стола</span></div>
+          <div class="stat" data-reveal><b><span data-count="4.9" data-decimals="1">0</span> ★</b><span>средняя оценка гостей</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Бегущая строка -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee-row row-a"><div class="marquee-track">
+        <span>Мраморная говядина</span><i>✦</i><span>Чеддер 9 месяцев</span><i>✦</i><span>Бриошь</span><i>✦</i><span>Фирменный соус</span><i>✦</i><span>Хрустящий айсберг</span><i>✦</i><span>Томаты</span><i>✦</i><span>Красный лук</span><i>✦</i><span>Огурцы</span><i>✦</i>
+        <span>Мраморная говядина</span><i>✦</i><span>Чеддер 9 месяцев</span><i>✦</i><span>Бриошь</span><i>✦</i><span>Фирменный соус</span><i>✦</i><span>Хрустящий айсберг</span><i>✦</i><span>Томаты</span><i>✦</i><span>Красный лук</span><i>✦</i><span>Огурцы</span><i>✦</i>
+      </div></div>
+      <div class="marquee-row row-b"><div class="marquee-track">
+        <span>Жарим на чугуне</span><i>●</i><span>Рубим вручную</span><i>●</i><span>Печём каждые 4 часа</span><i>●</i><span>Без заморозки</span><i>●</i><span>Соусы — сами</span><i>●</i><span>Гриль 260 °C</span><i>●</i>
+        <span>Жарим на чугуне</span><i>●</i><span>Рубим вручную</span><i>●</i><span>Печём каждые 4 часа</span><i>●</i><span>Без заморозки</span><i>●</i><span>Соусы — сами</span><i>●</i><span>Гриль 260 °C</span><i>●</i>
+      </div></div>
+    </div>
+
+    <!-- 3. АНАТОМИЯ (разнесённый вид) -->
+    <section id="anatomy" class="sec anatomy">
+      <div class="anatomy-intro col">
+        <div class="eyebrow" data-reveal><span class="num">02</span> — Анатомия</div>
+        <h2 class="h2" data-split>Разберём бургер <span class="accent">по слоям</span></h2>
+        <p class="lead" data-reveal>Продолжайте листать: бургер раскроется, и вы увидите, из чего он сделан — до грамма.</p>
+      </div>
+    </section>
+
+    <!-- 4. ИНГРЕДИЕНТЫ КРУПНЫМ ПЛАНОМ -->
+    <section id="spot-beef" class="sec spot" data-focus="0" data-side="left">
+      <div class="spot-stick"><article class="panel">
+        <div class="panel-num">01</div>
+        <div class="eyebrow"><span class="num">03</span> — Ингредиент</div>
+        <h3 class="h3">Мраморная говядина</h3>
+        <p>Котлета 200 г из говядины зернового откорма с мраморностью 20%. Рубим мясо вручную каждое утро и жарим на чугуне при 260 °C — снаружи хрустящая корочка, внутри сочная розовая сердцевина.</p>
+        <ul class="chips"><li>200 г</li><li>Прожарка Medium</li><li>Гриль 260 °C</li></ul>
+      </article></div>
+    </section>
+
+    <section id="spot-cheese" class="sec spot" data-focus="1" data-side="right">
+      <div class="spot-stick"><article class="panel">
+        <div class="panel-num">02</div>
+        <div class="eyebrow"><span class="num">03</span> — Ингредиент</div>
+        <h3 class="h3">Чеддер 9&nbsp;месяцев выдержки</h3>
+        <p>Плавим прямо на котлете под колпаком ровно 40 секунд — чтобы сыр стёк по краям, но сохранил сливочный, чуть острый вкус.</p>
+        <ul class="chips"><li>25 г</li><li>Выдержка 9 мес</li><li>Плавление 40 сек</li></ul>
+      </article></div>
+    </section>
+
+    <section id="spot-veg" class="sec spot" data-focus="2" data-side="left">
+      <div class="spot-stick"><article class="panel">
+        <div class="panel-num">03</div>
+        <div class="eyebrow"><span class="num">03</span> — Ингредиент</div>
+        <h3 class="h3">Свежие овощи</h3>
+        <p>Хрустящий айсберг, томаты «Бычье сердце», сладкий красный лук и огурцы домашнего посола. Каждое утро — от фермеров Алматинской области, без заморозки.</p>
+        <ul class="chips"><li>С фермы за 12 ч</li><li>4 вида овощей</li><li>0% заморозки</li></ul>
+      </article></div>
+    </section>
+
+    <section id="spot-sauce" class="sec spot" data-focus="3" data-side="right">
+      <div class="spot-stick"><article class="panel">
+        <div class="panel-num">04</div>
+        <div class="eyebrow"><span class="num">03</span> — Ингредиент</div>
+        <h3 class="h3">Фирменный соус</h3>
+        <p>Рецепт держим в секрете. Намекнём: копчёная паприка, жареный чеснок, дижонская горчица и капля горного мёда. Снизу — нежный чесночный айоли.</p>
+        <ul class="chips"><li>2 соуса</li><li>Готовим сами</li><li>Без консервантов</li></ul>
+      </article></div>
+    </section>
+
+    <section id="spot-bun" class="sec spot" data-focus="4" data-side="left">
+      <div class="spot-stick"><article class="panel">
+        <div class="panel-num">05</div>
+        <div class="eyebrow"><span class="num">03</span> — Ингредиент</div>
+        <h3 class="h3">Булочка бриошь</h3>
+        <p>Печём в собственной пекарне каждые 4 часа: сливочное масло, яйца и щепотка сахара. Перед подачей обжариваем срез на гриле — булочка держит сок до последнего укуса.</p>
+        <ul class="chips"><li>Своя пекарня</li><li>Каждые 4 часа</li><li>Обжарка на гриле</li></ul>
+      </article></div>
+    </section>
+
+    <!-- 5. МЕНЮ -->
+    <section id="menu" class="sec menu">
+      <div class="menu-head">
+        <div class="eyebrow" data-reveal><span class="num">04</span> — Меню</div>
+        <h2 class="h2" data-split>Выберите <span class="accent">свой</span> бургер</h2>
+        <p class="lead" data-reveal>Любой бургер можно сделать двойным — +1 200 ₸ за котлету. Картофель фри и лимонады — в приложении.</p>
+      </div>
+      <div class="cards">
+        <article class="card" data-reveal>
+          <span class="tag">Хит</span>
+          <div class="art"><i class="l-bun-top"></i><i class="l-sauce"></i><i class="l-pickle"></i><i class="l-tomato"></i><i class="l-cheese"></i><i class="l-patty"></i><i class="l-lettuce"></i><i class="l-bun-bottom"></i></div>
+          <h3>Классика СОЧНО</h3>
+          <p>Мраморная говядина, чеддер, томаты, красный лук, огурцы, фирменный соус</p>
+          <div class="card-meta"><span>455 г · 1110 ккал</span></div>
+          <div class="card-foot"><b class="price">2 990 ₸</b><button class="add" type="button" aria-label="Добавить в корзину">+</button></div>
+        </article>
+        <article class="card" data-reveal>
+          <span class="tag">Для голодных</span>
+          <div class="art"><i class="l-bun-top"></i><i class="l-sauce l-sauce--mustard"></i><i class="l-cheese"></i><i class="l-patty"></i><i class="l-cheese"></i><i class="l-patty"></i><i class="l-bun-bottom"></i></div>
+          <h3>Двойной чеддер</h3>
+          <p>Две котлеты, двойной чеддер, маринованный лук, горчичный соус</p>
+          <div class="card-meta"><span>620 г · 1540 ккал</span></div>
+          <div class="card-foot"><b class="price">3 890 ₸</b><button class="add" type="button" aria-label="Добавить в корзину">+</button></div>
+        </article>
+        <article class="card" data-reveal>
+          <span class="tag tag--new">Новинка</span>
+          <div class="art"><i class="l-bun-top l-bun-top--dark"></i><i class="l-sauce l-sauce--bbq"></i><i class="l-onion"></i><i class="l-bacon"></i><i class="l-cheese l-cheese--smoked"></i><i class="l-patty"></i><i class="l-bun-bottom"></i></div>
+          <h3>Смоки BBQ</h3>
+          <p>Говядина, хрустящий бекон, луковые кольца, копчёный чеддер, BBQ-соус</p>
+          <div class="card-meta"><span>510 г · 1290 ккал</span></div>
+          <div class="card-foot"><b class="price">3 490 ₸</b><button class="add" type="button" aria-label="Добавить в корзину">+</button></div>
+        </article>
+        <article class="card" data-reveal>
+          <span class="tag tag--hot">Острый</span>
+          <div class="art"><i class="l-bun-top"></i><i class="l-sauce l-sauce--hot"></i><i class="l-jalapeno"></i><i class="l-cheese l-cheese--pepper"></i><i class="l-patty"></i><i class="l-lettuce"></i><i class="l-bun-bottom"></i></div>
+          <h3>Огненный халапеньо</h3>
+          <p>Говядина, перец халапеньо, сыр пеппер-джек, соус шрирача-майо</p>
+          <div class="card-meta"><span>470 г · 1180 ккал</span></div>
+          <div class="card-foot"><b class="price">3 290 ₸</b><button class="add" type="button" aria-label="Добавить в корзину">+</button></div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 6. ФИНАЛ -->
+    <section id="final" class="sec final">
+      <div class="col">
+        <div class="eyebrow" data-reveal><span class="num">05</span> — Пора обедать</div>
+        <h2 class="h2 h2--xl" data-split>Голодны? Гриль <span class="accent">уже&nbsp;разогрет</span></h2>
+        <p class="lead" data-reveal>Доставим горячим за 30 минут по Алматы или приготовим к вашему приходу. Первый заказ на сайте — картофель фри в подарок.</p>
+        <div class="cta-row" data-reveal>
+          <a href="#contacts" class="btn btn-primary btn-xl magnetic"><span>Заказать</span><i class="arrow">→</i></a>
+          <a href="tel:+77000000000" class="btn btn-ghost magnetic"><span>+7 (700) 000-00-00</span></a>
+        </div>
+        <ul class="chips chips--row" data-reveal><li>Доставка 30 мин</li><li>Самовывоз −10%</li><li>Kaspi / карта / наличные</li></ul>
+      </div>
+    </section>
+  </main>
+
+  <!-- ФУТЕР -->
+  <footer id="contacts" class="footer">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#hero" class="logo">СОЧНО<span class="dot"></span></a>
+        <p>Крафтовая бургерная. Жарим на чугуне с 2019 года.</p>
+      </div>
+      <div><h4>Адрес</h4><p>г. Алматы, пр. Абая, 10<br><small>(демо-адрес)</small></p></div>
+      <div><h4>Часы работы</h4><p>Ежедневно<br>11:00 — 02:00</p></div>
+      <div><h4>Контакты</h4><p><a href="tel:+77000000000">+7 (700) 000-00-00</a><br><a href="mailto:hello@sochno.kz">hello@sochno.kz</a><br><a href="#contacts">Instagram @sochno.burger</a></p></div>
+    </div>
+    <div class="foot-giant" aria-hidden="true">СОЧНО</div>
+    <div class="foot-bottom"><span>© 2026 СОЧНО. Все цены и контакты на сайте — демонстрационные.</span><a href="#hero">Наверх ↑</a></div>
+  </footer>
+
+  <script src="../assets/vendor/gsap/gsap.min.js"></script>
+  <script src="../assets/vendor/gsap/ScrollTrigger.min.js"></script>
+  <script src="../assets/vendor/lenis/lenis.min.js"></script>
+  <script>
+/* ==========================================================
+   СОЧНО — бургерная. Скролл-анимация 3D-бургера
+   Three.js (ES-модули через import map) + GSAP/ScrollTrigger + Lenis
+   Классический скрипт: Three подгружается через dynamic import(),
+   поэтому страница работает и с локального сервера, и через file://
+   ========================================================== */
+(function () {
+  'use strict';
+
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const smooth = (t) => t * t * (3 - 2 * t);
+  const isMobile = () => window.innerWidth < 820;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const hasMouse = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+  document.body.classList.add('loading');
+
+  if (!window.gsap || !window.ScrollTrigger) {
+    // Без GSAP показываем статичный контент
+    const pre = $('#preloader'); if (pre) pre.remove();
+    document.body.classList.remove('loading');
+    document.body.classList.add('no-webgl');
+    return;
+  }
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ---------------- Lenis: плавный скролл ---------------- */
+  let lenis = null;
+  if (window.Lenis && !reduced) {
+    lenis = new Lenis({ duration: 1.15, smoothWheel: true, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add((t) => lenis.raf(t * 1000));
+    gsap.ticker.lagSmoothing(0);
+    lenis.stop();
+  }
+  window.__lenis = lenis;
+
+  $$('a[href^="#"]').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const el = document.querySelector(id);
+      if (!el) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(el, { duration: 1.8 });
+      else el.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ---------------- Прогресс-бар и навигация ---------------- */
+  const bar = $('.progress span');
+  const nav = $('.nav');
+  ScrollTrigger.create({
+    start: 0, end: 'max',
+    onUpdate: (self) => {
+      bar.style.transform = `scaleX(${self.progress})`;
+      nav.classList.toggle('scrolled', self.scroll() > 40);
+    }
+  });
+  const navMap = { anatomy: 'anatomy', 'spot-beef': 'spot-beef', menu: 'menu', contacts: 'contacts' };
+  [['anatomy', '#anatomy'], ['spot-beef', '.spot'], ['menu', '#menu'], ['contacts', '#final']].forEach(([key, sel]) => {
+    const els = $$(sel);
+    const link = $(`.nav-links a[href="#${navMap[key]}"]`);
+    if (!link || !els.length) return;
+    ScrollTrigger.create({
+      trigger: els[0], endTrigger: els[els.length - 1], start: 'top 50%', end: key === 'contacts' ? 'max' : 'bottom 50%',
+      onToggle: (s) => link.classList.toggle('active', s.isActive)
+    });
+  });
+
+  /* ---------------- Split text ---------------- */
+  function splitText(el) {
+    const chars = [];
+    const walk = (node) => {
+      Array.from(node.childNodes).forEach((child) => {
+        if (child.nodeType === 3) {
+          const parts = child.textContent.split(/([ \t\n\r\f]+)/);
+          const frag = document.createDocumentFragment();
+          parts.forEach((p) => {
+            if (!p) return;
+            if (/^[ \t\n\r\f]+$/.test(p)) { frag.appendChild(document.createTextNode(' ')); return; }
+            const w = document.createElement('span');
+            w.className = 'w';
+            for (const c of p) {
+              const s = document.createElement('span');
+              s.className = 'ch';
+              s.textContent = c === '\u00a0' ? '\u00a0' : c;
+              w.appendChild(s);
+              chars.push(s);
+            }
+            frag.appendChild(w);
+          });
+          node.replaceChild(frag, child);
+        } else if (child.nodeType === 1 && child.tagName !== 'BR') {
+          walk(child);
+        }
+      });
+    };
+    walk(el);
+    return chars;
+  }
+
+  const splitEls = $$('[data-split]');
+  const splitMap = new Map();
+  splitEls.forEach((el) => {
+    const chars = splitText(el);
+    splitMap.set(el, chars);
+    gsap.set(chars, { yPercent: 120, rotate: 8 });
+  });
+  function revealSplit(el, delay = 0) {
+    const chars = splitMap.get(el);
+    gsap.to(chars, { yPercent: 0, rotate: 0, duration: 1.1, ease: 'expo.out', stagger: 0.022, delay });
+    $$('.accent', el).forEach((a) => setTimeout(() => a.classList.add('in'), delay * 1000 + 250));
+  }
+  splitEls.forEach((el) => {
+    if (el.dataset.split === 'hero') return;
+    ScrollTrigger.create({ trigger: el, start: 'top 82%', once: true, onEnter: () => revealSplit(el) });
+  });
+
+  /* ---------------- Reveal блоков ---------------- */
+  $$('[data-reveal]').forEach((el) => {
+    const inHero = !!el.closest('#hero');
+    gsap.set(el, { y: 36, opacity: 0, filter: 'blur(8px)' });
+    if (inHero || el.classList.contains('card')) return;
+    ScrollTrigger.create({
+      trigger: el, start: 'top 88%', once: true,
+      onEnter: () => gsap.to(el, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power3.out', delay: (el.dataset.delay || 0) * 1 })
+    });
+  });
+  // Карточки меню — каскадом
+  ScrollTrigger.batch('.card', {
+    start: 'top 90%', once: true,
+    onEnter: (els) => gsap.to(els, { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1, ease: 'power3.out', stagger: 0.12, overwrite: true })
+  });
+
+  // Панели ингредиентов выезжают сбоку
+  $$('.spot').forEach((s) => {
+    const panel = $('.panel', s);
+    const dir = s.dataset.side === 'left' ? -1 : 1;
+    gsap.fromTo(panel, { x: 90 * dir, opacity: 0, rotateY: 12 * dir, filter: 'blur(10px)' }, {
+      x: 0, opacity: 1, rotateY: 0, filter: 'blur(0px)', duration: 1.1, ease: 'power3.out',
+      scrollTrigger: { trigger: s, start: 'top 55%', end: 'bottom 45%', toggleActions: 'play reverse play reverse' }
+    });
+    const kids = [panel.querySelector('.eyebrow'), panel.querySelector('.h3'), panel.querySelector('p'), ...$$('.chips li', panel)];
+    gsap.from(kids, {
+      y: 24, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.07, delay: 0.15,
+      scrollTrigger: { trigger: s, start: 'top 55%', end: 'bottom 45%', toggleActions: 'play reverse play reverse' }
+    });
+  });
+
+  // Подсказка «листайте» исчезает при скролле
+  gsap.to('.scroll-hint', { opacity: 0, y: 20, ease: 'none', scrollTrigger: { start: 0, end: 200, scrub: true } });
+
+  /* ---------------- Счётчики ---------------- */
+  $$('[data-count]').forEach((el) => {
+    const to = parseFloat(el.dataset.count);
+    const dec = parseInt(el.dataset.decimals || '0', 10);
+    const obj = { v: 0 };
+    ScrollTrigger.create({
+      trigger: el, start: 'top 90%', once: true,
+      onEnter: () => gsap.to(obj, {
+        v: to, duration: 2, ease: 'power2.out',
+        onUpdate: () => { el.textContent = obj.v.toFixed(dec).replace('.', ','); }
+      })
+    });
+  });
+
+  /* ---------------- Бегущая строка с реакцией на скорость скролла ---------------- */
+  const marqueeTweens = $$('.marquee-track').map((track, i) => {
+    const dir = i % 2 === 0 ? -1 : 1;
+    gsap.set(track, { xPercent: dir === -1 ? 0 : -50 });
+    return gsap.to(track, { xPercent: dir === -1 ? -50 : 0, duration: i % 2 === 0 ? 38 : 46, ease: 'none', repeat: -1 });
+  });
+  ScrollTrigger.create({
+    trigger: '.marquee', start: 'top bottom', end: 'bottom top',
+    onUpdate: (self) => {
+      const v = Math.abs(self.getVelocity());
+      const boost = 1 + Math.min(v / 250, 6);
+      marqueeTweens.forEach((t) => {
+        gsap.to(t, { timeScale: boost, duration: 0.15, overwrite: true, onComplete: () => gsap.to(t, { timeScale: 1, duration: 1.2 }) });
+      });
+    }
+  });
+
+  /* ---------------- Магнитные кнопки ---------------- */
+  if (hasMouse) {
+    document.body.classList.add('has-mouse');
+    $$('.magnetic').forEach((btn) => {
+      const xTo = gsap.quickTo(btn, 'x', { duration: 0.6, ease: 'power3.out' });
+      const yTo = gsap.quickTo(btn, 'y', { duration: 0.6, ease: 'power3.out' });
+      const inner = btn.querySelector('span');
+      btn.addEventListener('mousemove', (e) => {
+        const r = btn.getBoundingClientRect();
+        const dx = e.clientX - (r.left + r.width / 2);
+        const dy = e.clientY - (r.top + r.height / 2);
+        xTo(dx * 0.35); yTo(dy * 0.45);
+        if (inner) gsap.to(inner, { x: dx * 0.12, y: dy * 0.12, duration: 0.6, ease: 'power3.out' });
+      });
+      btn.addEventListener('mouseleave', () => {
+        gsap.to(btn, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, 0.35)' });
+        if (inner) gsap.to(inner, { x: 0, y: 0, duration: 1, ease: 'elastic.out(1, 0.35)' });
+      });
+    });
+
+    // Карточки: 3D-наклон + прожектор
+    $$('.card, .panel').forEach((card) => {
+      const isCard = card.classList.contains('card');
+      card.addEventListener('mousemove', (e) => {
+        const r = card.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        card.style.setProperty('--mx', `${px * 100}%`);
+        card.style.setProperty('--my', `${py * 100}%`);
+        if (isCard) gsap.to(card, { rotateY: (px - 0.5) * 16, rotateX: -(py - 0.5) * 14, transformPerspective: 900, duration: 0.5, ease: 'power2.out' });
+      });
+      card.addEventListener('mouseleave', () => {
+        if (isCard) gsap.to(card, { rotateY: 0, rotateX: 0, duration: 0.9, ease: 'elastic.out(1, 0.5)' });
+      });
+    });
+
+    // Свечение за курсором
+    const cg = $('.cursor-glow');
+    const cx = gsap.quickTo(cg, 'x', { duration: 0.5, ease: 'power3.out' });
+    const cy = gsap.quickTo(cg, 'y', { duration: 0.5, ease: 'power3.out' });
+    window.addEventListener('mousemove', (e) => { cx(e.clientX); cy(e.clientY); });
+  }
+
+  // Кнопка «+» в карточке
+  $$('.add').forEach((b) => b.addEventListener('click', () => {
+    b.classList.add('done'); b.textContent = '✓';
+    gsap.fromTo(b, { scale: 0.7 }, { scale: 1, duration: 0.6, ease: 'elastic.out(1, 0.4)' });
+    setTimeout(() => { b.classList.remove('done'); b.textContent = '+'; }, 1600);
+  }));
+
+  /* ---------------- Мышь для параллакса 3D ---------------- */
+  const mouse = { x: 0, y: 0, sx: 0, sy: 0 };
+  window.addEventListener('mousemove', (e) => {
+    mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = (e.clientY / window.innerHeight) * 2 - 1;
+  });
+
+  /* ---------------- Прелоадер ---------------- */
+  const pre = $('#preloader');
+  const preNum = $('.pre-num');
+  const preBar = $('.pre-bar span');
+  const preState = { v: 0 };
+  const preTween = gsap.to(preState, {
+    v: 88, duration: 2.6, ease: 'power2.out',
+    onUpdate: () => { preNum.textContent = Math.round(preState.v) + '%'; preBar.style.width = preState.v + '%'; }
+  });
+
+  let introPlayed = false;
+  function finishLoading(onIntro) {
+    if (introPlayed) return;
+    introPlayed = true;
+    preTween.kill();
+    gsap.to(preState, {
+      v: 100, duration: 0.45, ease: 'power2.out',
+      onUpdate: () => { preNum.textContent = Math.round(preState.v) + '%'; preBar.style.width = preState.v + '%'; },
+      onComplete: () => {
+        gsap.to(pre, {
+          yPercent: -100, duration: 1, ease: 'expo.inOut',
+          onComplete: () => { pre.remove(); }
+        });
+        document.body.classList.remove('loading');
+        if (lenis) lenis.start();
+        // Hero-интро
+        const h1 = $('[data-split="hero"]');
+        revealSplit(h1, 0.45);
+        gsap.to($$('#hero [data-reveal]'), { y: 0, opacity: 1, filter: 'blur(0px)', duration: 1.1, ease: 'power3.out', stagger: 0.1, delay: 0.6 });
+        if (onIntro) onIntro();
+        ScrollTrigger.refresh();
+      }
+    });
+  }
+
+  /* =========================================================
+     3D-СЦЕНА
+     ========================================================= */
+  const state = {
+    assemble: 0, explode: 0, gx: 0, gy: 0, rotY: 0,
+    camDist: 10.5, camElev: 0.3, targetY: 0, labels: 0,
+    f0: 0, f1: 0, f2: 0, f3: 0, f4: 0
+  };
+  window.__state = state;
+
+  // Данные слоёв (снизу вверх)
+  const LAYERS = [
+    { key: 'bunBottom', short: 'Бриошь · низ', h: 0.55, r: 1.62, group: 4, name: 'Булочка бриошь · низ', desc: 'Плотная, держит сок до последнего укуса', meta: '50 г · 160 ккал' },
+    { key: 'sauceB', short: 'Айоли', h: 0.04, r: 1.66, group: 3, name: 'Чесночный айоли', desc: 'Сливочный, на жареном чесноке', meta: '15 г · 90 ккал' },
+    { key: 'lettuce', short: 'Айсберг', h: 0.1, r: 1.95, group: 2, name: 'Салат айсберг', desc: 'Хрустящий и прохладный', meta: '15 г · 2 ккал' },
+    { key: 'patty', short: 'Котлета', h: 0.5, r: 1.8, group: 0, name: 'Котлета из мраморной говядины', desc: 'Рубим вручную, корочка на гриле', meta: '200 г · 480 ккал' },
+    { key: 'cheese', short: 'Чеддер', h: 0.05, r: 1.75, group: 1, name: 'Чеддер', desc: 'Выдержка 9 месяцев, тает идеально', meta: '25 г · 100 ккал' },
+    { key: 'tomato', short: 'Томаты', h: 0.15, r: 1.55, group: 2, name: 'Томаты «Бычье сердце»', desc: 'Спелые и сладкие', meta: '40 г · 8 ккал' },
+    { key: 'onion', short: 'Красный лук', h: 0.07, r: 1.35, group: 2, name: 'Красный лук', desc: 'Сладкий, тонкими кольцами', meta: '15 г · 6 ккал' },
+    { key: 'pickles', short: 'Огурцы', h: 0.07, r: 1.3, group: 2, name: 'Огурцы домашнего посола', desc: 'Хрустящие, с укропом', meta: '20 г · 4 ккал' },
+    { key: 'sauceT', short: 'Соус СОЧНО', h: 0.04, r: 1.66, group: 3, name: 'Фирменный соус СОЧНО', desc: 'Копчёная паприка, чеснок, мёд', meta: '15 г · 70 ккал' },
+    { key: 'bunTop', short: 'Бриошь · верх', h: 1.15, r: 1.66, group: 4, name: 'Булочка бриошь · верх', desc: 'Сливочная, с кунжутом', meta: '60 г · 190 ккал' }
+  ];
+  const SCATTER = [
+    [0.3, -2.3, 0.0], [-1.5, -1.65, -1.5], [2.0, -1.3, -1.2], [-0.6, -0.45, 0.3], [2.0, 0.3, -0.6],
+    [-1.7, 0.75, -1.4], [0.9, 0.85, 0.5], [-0.9, 1.75, -0.8], [1.9, 1.75, -1.8], [0.35, 2.15, -0.4]
+  ];
+  const SPOT = {
+    0: { gap: 0, scale: 0.88, tilt: 0.45 }, 1: { gap: 0, scale: 0.8, tilt: 0.42 }, 2: { gap: 0.62, scale: 0.82, tilt: 0.38 },
+    3: { gap: 0.62, scale: 0.8, tilt: 0.45 }, 4: { gap: 1.45, scale: 0.82, tilt: 0.3 }
+  };
+
+  let master = null;
+
+  function buildTimeline() {
+    if (master) { if (master.scrollTrigger) master.scrollTrigger.kill(); master.kill(); master = null; }
+    const vh = window.innerHeight;
+    const max = Math.max(1, document.documentElement.scrollHeight - vh);
+    const top = (el) => (typeof el === 'string' ? document.getElementById(el) : el).getBoundingClientRect().top + window.scrollY;
+    const m = isMobile();
+    const G = (d, mb) => (m ? mb : d);
+    const K = [];
+    const add = (pos, props) => K.push([clamp(pos, 0, max), props]);
+    let rot = 0;
+
+    add(0, { assemble: 0, explode: 0, gx: G(2.4, 0), gy: G(0, -3.2), rotY: 0, camDist: G(14, 18), camElev: 0.3, targetY: 0, labels: 0, f0: 0, f1: 0, f2: 0, f3: 0, f4: 0 });
+    add(vh * 0.7, { assemble: 1, camDist: G(11.6, 11), camElev: 0.27, rotY: (rot += 0.9), gx: G(2.4, 0) });
+
+    const ab = top('about');
+    add(ab + vh * 0.1, { gx: G(2.5, 0), gy: G(0, -0.2), camDist: G(11.2, 11), camElev: 0.22, rotY: (rot += Math.PI) });
+
+    const an = top('anatomy');
+    const anH = document.getElementById('anatomy').offsetHeight;
+    add(an + vh * 0.05, { gx: 0, gy: G(0, -0.4), explode: 0, camDist: G(11, 11), camElev: 0.26, rotY: (rot += Math.PI * 0.5) });
+    add(an + vh * 0.45, { labels: 0 });
+    add(an + vh * 1.0, { explode: 1, camDist: G(20, 20), camElev: 0.2, gy: G(-0.15, 0), gx: G(0, -1.1), labels: 1, rotY: (rot += 0.6) });
+    add(an + anH - vh * 0.7, { explode: 1, labels: 1, camDist: G(20, 20), gx: G(0, -1.1), gy: G(-0.15, 0), camElev: 0.2, rotY: (rot += Math.PI * 0.6) });
+
+    const spots = $$('.spot');
+    spots.forEach((s, i) => {
+      const t = top(s);
+      const side = s.dataset.side === 'left' ? 1 : -1;
+      const fk = 'f' + s.dataset.focus;
+      if (i === 0) add(t - vh * 0.45, { labels: 0 });
+      add(t - vh * 0.55, { [fk]: 0 });
+      add(t - vh * 0.05, { [fk]: 1, gx: G(2.3 * side, 0), camDist: G(12.5, 15), camElev: 0.2, gy: G(0, 1.1), rotY: (rot += 0.5) });
+      add(t + vh * 0.7, { [fk]: 1, gx: G(2.3 * side, 0), gy: G(0, 1.1), rotY: (rot += 0.7) });
+      add(t + vh * 1.2, { [fk]: 0 });
+    });
+
+    const mn = top('menu');
+    const fn = top('final');
+    add(mn - vh * 0.6, { explode: 1, gy: G(0, 1.1) });
+    add(mn + vh * 0.05, { explode: 2.6, gy: 16 });
+    add(fn - vh * 0.65, { gy: 16 });
+    add(fn - vh * 0.65 + 1, { gy: -14 });
+    const finalDist = G(10, 23);
+    add(fn + vh * 0.02, { gy: G(-0.1, -5.0), explode: 0, gx: G(2.45, 0), camDist: finalDist, camElev: 0.24, targetY: 0, rotY: (rot += Math.PI * 1.5) });
+    const unitsPerPx = (2 * Math.tan((32 * Math.PI) / 360) * finalDist) / vh;
+    const footerShift = Math.max(0, max - fn);
+    add(max, { gy: G(-0.1, -5.0) + footerShift * unitsPerPx, rotY: (rot += Math.PI * 2) });
+
+    K.sort((a, b) => a[0] - b[0]);
+    const tl = gsap.timeline({ paused: true });
+    const last = {};
+    K.forEach(([pos, props]) => {
+      Object.keys(props).forEach((k) => {
+        const v = props[k];
+        if (!(k in last)) { last[k] = [pos, v]; if (pos === 0) state[k] = v; return; }
+        const [p0, v0] = last[k];
+        const dur = Math.max(pos - p0, 0.001);
+        tl.fromTo(state, { [k]: v0 }, { [k]: v, duration: dur, ease: 'power2.inOut', immediateRender: false }, p0);
+        last[k] = [pos, v];
+      });
+    });
+    if (tl.duration() < max) tl.set({}, {}, max);
+    master = tl;
+    ScrollTrigger.create({ start: 0, end: max, scrub: reduced ? true : 0.9, animation: tl });
+    tl.progress(clamp(window.scrollY / max)); // синхронизация при перезагрузке посреди страницы
+  }
+
+  async function initScene() {
+    const THREE = await import('three');
+    const { RoomEnvironment } = await import('three/addons/environments/RoomEnvironment.js');
+
+    const canvas = $('#scene');
+    let renderer;
+    try {
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true, powerPreference: 'high-performance' });
+    } catch (e) {
+      throw new Error('WebGL недоступен');
+    }
+    const mob = isMobile();
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight, false);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.05;
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+    scene.environmentIntensity = 0.5;
+
+    const FOV = 32;
+    const camera = new THREE.PerspectiveCamera(FOV, window.innerWidth / window.innerHeight, 0.1, 120);
+
+    /* ---- Свет ---- */
+    scene.add(new THREE.HemisphereLight(0xffe6c8, 0x2a1408, 0.75));
+    const key = new THREE.DirectionalLight(0xfff0dc, 2.7);
+    key.position.set(4, 9, 7);
+    key.castShadow = true;
+    key.shadow.mapSize.set(mob ? 1024 : 2048, mob ? 1024 : 2048);
+    Object.assign(key.shadow.camera, { left: -7, right: 7, top: 7, bottom: -7, near: 1, far: 32 });
+    key.shadow.bias = -0.0005;
+    key.shadow.normalBias = 0.025;
+    key.shadow.radius = 5;
+    const rim = new THREE.DirectionalLight(0xff7a26, 3.4); rim.position.set(-7, 4, -6);
+    const rim2 = new THREE.DirectionalLight(0xffb070, 1.7); rim2.position.set(7, 3, -5);
+    const fill = new THREE.DirectionalLight(0xffd9b8, 0.7); fill.position.set(-6, 1, 7);
+    const under = new THREE.PointLight(0xff6a1a, 6, 14, 2); under.position.set(0, -4, 3);
+    scene.add(key, key.target, rim, rim2, fill, under);
+
+    /* ---- Утилиты ---- */
+    let seed = 7;
+    const rnd = () => { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; };
+    const perm = new Uint8Array(512);
+    (() => { const p = [...Array(256).keys()]; for (let i = 255; i > 0; i--) { const j = Math.floor(rnd() * (i + 1)); [p[i], p[j]] = [p[j], p[i]]; } for (let i = 0; i < 512; i++) perm[i] = p[i & 255]; })();
+    function vnoise(x, y, z) {
+      const X = Math.floor(x), Y = Math.floor(y), Z = Math.floor(z);
+      const fx = x - X, fy = y - Y, fz = z - Z;
+      const u = fx * fx * (3 - 2 * fx), v = fy * fy * (3 - 2 * fy), w = fz * fz * (3 - 2 * fz);
+      const h = (i, j, k) => perm[(perm[(perm[(X + i) & 255] + Y + j) & 255] + Z + k) & 255] / 255;
+      const x00 = lerp(h(0, 0, 0), h(1, 0, 0), u), x10 = lerp(h(0, 1, 0), h(1, 1, 0), u);
+      const x01 = lerp(h(0, 0, 1), h(1, 0, 1), u), x11 = lerp(h(0, 1, 1), h(1, 1, 1), u);
+      return lerp(lerp(x00, x10, v), lerp(x01, x11, v), w) * 2 - 1;
+    }
+    const fbm = (x, y, z) => vnoise(x, y, z) * 0.6 + vnoise(x * 2.03, y * 2.03, z * 2.03) * 0.28 + vnoise(x * 4.1, y * 4.1, z * 4.1) * 0.12;
+
+    function canvasTex(size, draw, { repeat = null, srgb = true } = {}) {
+      const c = document.createElement('canvas');
+      c.width = c.height = size;
+      const g = c.getContext('2d');
+      draw(g, size);
+      const t = new THREE.CanvasTexture(c);
+      if (srgb) t.colorSpace = THREE.SRGBColorSpace;
+      t.anisotropy = 4;
+      if (repeat) { t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(repeat[0], repeat[1]); }
+      return t;
+    }
+    function dots(g, s, n, color, rMin, rMax) {
+      g.fillStyle = color;
+      for (let i = 0; i < n; i++) {
+        const x = rnd() * s, y = rnd() * s, r = rMin + rnd() * (rMax - rMin);
+        g.beginPath(); g.arc(x, y, r, 0, Math.PI * 2); g.fill();
+      }
+    }
+    // Сглаживание нормалей по позиции (убирает шов у LatheGeometry)
+    function smoothNormalsByPosition(geo) {
+      geo.computeVertexNormals();
+      const pos = geo.attributes.position, nor = geo.attributes.normal;
+      const map = new Map();
+      const keyOf = (i) => `${pos.getX(i).toFixed(4)}|${pos.getY(i).toFixed(4)}|${pos.getZ(i).toFixed(4)}`;
+      for (let i = 0; i < pos.count; i++) {
+        const k = keyOf(i);
+        const a = map.get(k) || [0, 0, 0];
+        a[0] += nor.getX(i); a[1] += nor.getY(i); a[2] += nor.getZ(i);
+        map.set(k, a);
+      }
+      for (let i = 0; i < pos.count; i++) {
+        const a = map.get(keyOf(i));
+        const l = Math.hypot(a[0], a[1], a[2]) || 1;
+        nor.setXYZ(i, a[0] / l, a[1] / l, a[2] / l);
+      }
+      nor.needsUpdate = true;
+    }
+    function remapUV(geo, sPlanar, sCylU, sCylV, nyLim = 0.55) {
+      const p = geo.attributes.position, nr = geo.attributes.normal, uv = geo.attributes.uv;
+      for (let i = 0; i < p.count; i++) {
+        if (Math.abs(nr.getY(i)) > nyLim) uv.setXY(i, p.getX(i) * sPlanar + 0.5, p.getZ(i) * sPlanar + 0.5);
+        else uv.setXY(i, uv.getX(i) * sCylU, p.getY(i) * sCylV);
+      }
+      uv.needsUpdate = true;
+    }
+    function lathe(points, seg = 72) {
+      return new THREE.LatheGeometry(points.map((p) => new THREE.Vector2(p[0], p[1])), seg);
+    }
+    function setColors(geo, fn) {
+      const pos = geo.attributes.position, nor = geo.attributes.normal;
+      const arr = new Float32Array(pos.count * 3);
+      const c = new THREE.Color();
+      for (let i = 0; i < pos.count; i++) {
+        fn(c, pos.getX(i), pos.getY(i), pos.getZ(i), nor.getX(i), nor.getY(i), nor.getZ(i));
+        arr[i * 3] = c.r; arr[i * 3 + 1] = c.g; arr[i * 3 + 2] = c.b;
+      }
+      geo.setAttribute('color', new THREE.BufferAttribute(arr, 3));
+    }
+    const C = (hex) => new THREE.Color(hex);
+    const mix = (out, a, b, t) => out.copy(a).lerp(b, clamp(t));
+    const shadowed = (mesh) => { mesh.castShadow = true; mesh.receiveShadow = true; return mesh; };
+
+    /* ---- Текстуры ---- */
+    const bunTex = canvasTex(512, (g, s) => {
+      g.fillStyle = '#f4efe8'; g.fillRect(0, 0, s, s);
+      g.globalAlpha = 0.08; dots(g, s, 160, '#6b3410', 8, 26);
+      g.globalAlpha = 0.18; dots(g, s, 5000, '#7a3c14', 0.5, 1.8);
+      g.globalAlpha = 0.25; dots(g, s, 2200, '#ffffff', 0.5, 1.6);
+      g.globalAlpha = 1;
+    }, { repeat: [1, 1] });
+    const crumbTex = canvasTex(512, (g, s) => {
+      g.fillStyle = '#fbf3e6'; g.fillRect(0, 0, s, s);
+      g.globalAlpha = 0.35; dots(g, s, 2600, '#c99a5c', 1, 3.5);
+      g.globalAlpha = 0.5; dots(g, s, 900, '#ffffff', 1, 3);
+      g.globalAlpha = 1;
+    }, { repeat: [1, 1] });
+    const pattyTex = canvasTex(512, (g, s) => {
+      g.fillStyle = '#d9cfc6'; g.fillRect(0, 0, s, s);
+      // мягкие пятна обжарки (радиальный градиент, без резких краёв)
+      for (let i = 0; i < 160; i++) {
+        const x = rnd() * s, y = rnd() * s, r = 10 + rnd() * 26;
+        const gr = g.createRadialGradient(x, y, 0, x, y, r);
+        gr.addColorStop(0, 'rgba(42,18,6,0.22)'); gr.addColorStop(1, 'rgba(42,18,6,0)');
+        g.fillStyle = gr; g.fillRect(x - r, y - r, r * 2, r * 2);
+      }
+      g.globalAlpha = 0.55; dots(g, s, 9000, '#3a1a08', 0.6, 2.4);
+      g.globalAlpha = 0.45; dots(g, s, 4000, '#ffd2a8', 0.5, 1.8);
+      g.globalAlpha = 0.6; dots(g, s, 1500, '#1a0a03', 0.8, 2.8);
+      g.globalAlpha = 1;
+    }, { repeat: [1, 1] });
+    // отдельная карта рельефа для котлеты: только мелкое зерно фарша
+    const pattyBump = canvasTex(512, (g, s) => {
+      g.fillStyle = '#808080'; g.fillRect(0, 0, s, s);
+      g.globalAlpha = 0.5; dots(g, s, 9000, '#303030', 0.6, 2.2);
+      g.globalAlpha = 0.5; dots(g, s, 5000, '#d0d0d0', 0.5, 1.6);
+      g.globalAlpha = 1;
+    }, { repeat: [1, 1], srgb: false });
+    const tomatoTex = canvasTex(512, (g, s) => {
+      const c = s / 2;
+      g.fillStyle = '#b81a10'; g.fillRect(0, 0, s, s);
+      let gr = g.createRadialGradient(c, c, 0, c, c, c);
+      gr.addColorStop(0, '#f2563a'); gr.addColorStop(0.85, '#e23a24'); gr.addColorStop(0.95, '#c3200f'); gr.addColorStop(1, '#a3160b');
+      g.fillStyle = gr; g.beginPath(); g.arc(c, c, c, 0, Math.PI * 2); g.fill();
+      // семенные камеры
+      for (let i = 0; i < 5; i++) {
+        const a = (i / 5) * Math.PI * 2 + 0.3;
+        const x = c + Math.cos(a) * c * 0.5, y = c + Math.sin(a) * c * 0.5;
+        g.save(); g.translate(x, y); g.rotate(a);
+        gr = g.createRadialGradient(0, 0, 0, 0, 0, c * 0.3);
+        gr.addColorStop(0, 'rgba(255,150,90,0.95)'); gr.addColorStop(0.7, 'rgba(250,110,60,0.85)'); gr.addColorStop(1, 'rgba(240,80,40,0)');
+        g.fillStyle = gr; g.beginPath(); g.ellipse(0, 0, c * 0.3, c * 0.2, 0, 0, Math.PI * 2); g.fill();
+        g.fillStyle = '#ffe28a';
+        for (let k = 0; k < 9; k++) { g.beginPath(); g.ellipse((rnd() - 0.5) * c * 0.34, (rnd() - 0.5) * c * 0.2, 5, 3, rnd() * 3, 0, Math.PI * 2); g.fill(); }
+        g.restore();
+      }
+      gr = g.createRadialGradient(c, c, 0, c, c, c * 0.22);
+      gr.addColorStop(0, '#ff8d6a'); gr.addColorStop(1, 'rgba(240,70,40,0)');
+      g.fillStyle = gr; g.beginPath(); g.arc(c, c, c * 0.22, 0, Math.PI * 2); g.fill();
+    });
+    const pickleTex = canvasTex(256, (g, s) => {
+      const c = s / 2;
+      g.fillStyle = '#2f5a14'; g.fillRect(0, 0, s, s);
+      let gr = g.createRadialGradient(c, c, 0, c, c, c);
+      gr.addColorStop(0, '#d8df86'); gr.addColorStop(0.55, '#b6c45a'); gr.addColorStop(0.86, '#8ea43a'); gr.addColorStop(0.9, '#4d7a1f'); gr.addColorStop(1, '#2c5212');
+      g.fillStyle = gr; g.beginPath(); g.arc(c, c, c, 0, Math.PI * 2); g.fill();
+      g.fillStyle = 'rgba(250,250,200,0.85)';
+      for (let i = 0; i < 8; i++) { const a = (i / 8) * Math.PI * 2; g.beginPath(); g.ellipse(c + Math.cos(a) * c * 0.42, c + Math.sin(a) * c * 0.42, 9, 5, a, 0, Math.PI * 2); g.fill(); }
+      g.globalAlpha = 0.25; dots(g, s, 300, '#f6f2b0', 0.5, 1.5); g.globalAlpha = 1;
+    });
+    const shadowTex = canvasTex(256, (g, s) => {
+      const gr = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      gr.addColorStop(0, 'rgba(0,0,0,0.75)'); gr.addColorStop(0.5, 'rgba(0,0,0,0.35)'); gr.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, s, s);
+    }, { srgb: false });
+    const sparkTex = canvasTex(64, (g, s) => {
+      const gr = g.createRadialGradient(s / 2, s / 2, 0, s / 2, s / 2, s / 2);
+      gr.addColorStop(0, 'rgba(255,230,180,1)'); gr.addColorStop(0.3, 'rgba(255,150,60,0.6)'); gr.addColorStop(1, 'rgba(255,100,20,0)');
+      g.fillStyle = gr; g.fillRect(0, 0, s, s);
+    });
+
+    /* ---- Ингредиенты ---- */
+    const builders = {};
+
+    // Верхняя булочка с кунжутом
+    builders.bunTop = () => {
+      const R = 1.62, H = 1.15, rr = 0.13, n = 2.6;
+      const pts = [];
+      for (let i = 0; i <= 8; i++) pts.push([(R - rr) * (i / 8), 0]);
+      for (let i = 1; i <= 6; i++) { const a = -Math.PI / 2 + (Math.PI / 2) * (i / 6); pts.push([R - rr + rr * Math.cos(a), rr + rr * Math.sin(a)]); }
+      const prof = (a) => [R * Math.pow(Math.sin(a), 2 / n), rr + (H - rr) * Math.pow(Math.cos(a), 2 / n)];
+      for (let i = 1; i <= 30; i++) pts.push(prof((Math.PI / 2) * (1 - i / 30)));
+      const geo = lathe(pts, 80);
+      // лёгкая неровность
+      const p = geo.attributes.position;
+      for (let i = 0; i < p.count; i++) {
+        const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+        if (y < 0.02) continue;
+        const d = fbm(x * 1.3, y * 1.3, z * 1.3) * 0.045;
+        const r = Math.hypot(x, z) || 1;
+        p.setXYZ(i, x + (x / r) * d, y + d * 0.6 * (y / H), z + (z / r) * d);
+      }
+      smoothNormalsByPosition(geo);
+      remapUV(geo, 0.9, 5, 1.2, 0.7);
+      const cCrumb = C('#f3d9a6'), cRim = C('#f2c27a'), cMid = C('#cf7a2c'), cTop = C('#9c4a15');
+      setColors(geo, (c, x, y, z, nx, ny) => {
+        if (y < 0.015 && ny < -0.6) { c.copy(cCrumb); return; }
+        const t = clamp((y - 0.02) / (H - 0.02));
+        mix(c, cRim, cMid, smooth(clamp(t / 0.45)));
+        if (t > 0.45) c.lerp(cTop, smooth(clamp((t - 0.45) / 0.55)) * 0.75);
+        c.multiplyScalar(1 + fbm(x * 2.2, y * 2.2, z * 2.2) * 0.12);
+      });
+      const mat = new THREE.MeshPhysicalMaterial({
+        vertexColors: true, map: bunTex, bumpMap: bunTex, bumpScale: 0.5,
+        roughness: 0.42, clearcoat: 0.45, clearcoatRoughness: 0.32, sheen: 0.4, sheenColor: C('#ffcf8a'), sheenRoughness: 0.5
+      });
+      const g = new THREE.Group();
+      g.add(shadowed(new THREE.Mesh(geo, mat)));
+      // кунжут
+      const seedGeo = new THREE.SphereGeometry(1, 10, 6);
+      const seedMat = new THREE.MeshPhysicalMaterial({ color: '#f7e9c6', roughness: 0.45, clearcoat: 0.3, sheen: 0.5, sheenColor: C('#fff4d6') });
+      const placed = [];
+      const tries = 900, maxSeeds = 95;
+      for (let t = 0; t < tries && placed.length < maxSeeds; t++) {
+        const a = 0.04 + Math.pow(rnd(), 0.9) * 1.05;
+        const th = rnd() * Math.PI * 2;
+        const [px, py] = prof(a);
+        const pos = new THREE.Vector3(px * Math.cos(th), py, px * Math.sin(th));
+        if (placed.some((q) => q.pos.distanceTo(pos) < 0.19)) continue;
+        const e = 0.01;
+        const p1 = prof(a - e), p2 = prof(a + e);
+        const tx = p1[0] - p2[0], ty = p1[1] - p2[1];
+        const nl = Math.hypot(ty, -tx);
+        const nrm = new THREE.Vector3((ty / nl) * Math.cos(th), -tx / nl, (ty / nl) * Math.sin(th)).normalize();
+        placed.push({ pos, nrm });
+      }
+      const inst = new THREE.InstancedMesh(seedGeo, seedMat, placed.length);
+      const m4 = new THREE.Matrix4(), q = new THREE.Quaternion(), q2 = new THREE.Quaternion(), sc = new THREE.Vector3();
+      const up = new THREE.Vector3(0, 1, 0);
+      placed.forEach((s, i) => {
+        q.setFromUnitVectors(up, s.nrm);
+        q2.setFromAxisAngle(up, rnd() * Math.PI);
+        q.multiply(q2);
+        const k = 0.85 + rnd() * 0.3;
+        sc.set(0.075 * k, 0.026 * k, 0.04 * k);
+        const pos = s.pos.clone().addScaledVector(s.nrm, 0.012);
+        m4.compose(pos, q, sc);
+        inst.setMatrixAt(i, m4);
+      });
+      inst.castShadow = true;
+      g.add(inst);
+      return g;
+    };
+
+    // Нижняя булочка
+    builders.bunBottom = () => {
+      const R = 1.58, h = 0.55, rb = 0.22, rt = 0.07;
+      const pts = [];
+      for (let i = 0; i <= 6; i++) pts.push([(R - rb) * (i / 6), 0]);
+      for (let i = 1; i <= 7; i++) { const a = -Math.PI / 2 + (Math.PI / 2) * (i / 7); pts.push([R - rb + rb * Math.cos(a), rb + rb * Math.sin(a)]); }
+      for (let i = 1; i <= 4; i++) pts.push([R, rb + (h - rt - rb) * (i / 4)]);
+      for (let i = 1; i <= 5; i++) { const a = (Math.PI / 2) * (i / 5); pts.push([R - rt + rt * Math.cos(a), h - rt + rt * Math.sin(a)]); }
+      for (let i = 1; i <= 8; i++) pts.push([(R - rt) * (1 - i / 8), h]);
+      const geo = lathe(pts, 80);
+      const p = geo.attributes.position;
+      for (let i = 0; i < p.count; i++) {
+        const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+        const r = Math.hypot(x, z);
+        if (r < 0.01) continue;
+        const d = fbm(x * 1.6 + 5, y * 1.6, z * 1.6) * 0.035 * clamp(r / R);
+        p.setXYZ(i, x + (x / r) * d, y, z + (z / r) * d);
+      }
+      smoothNormalsByPosition(geo);
+      remapUV(geo, 0.6, 4, 1.0);
+      const cBottom = C('#9a5019'), cSide = C('#d68b3a'), cCut = C('#f0d39c'), cToast = C('#c98a45');
+      setColors(geo, (c, x, y, z, nx, ny) => {
+        const r = Math.hypot(x, z);
+        if (y > h - 0.01 && ny > 0.6) { mix(c, cCut, cToast, smooth(clamp(r / R)) * 0.55 + fbm(x * 3, 0, z * 3) * 0.2); return; }
+        const t = clamp(y / h);
+        mix(c, cBottom, cSide, smooth(clamp(t * 1.6)));
+        c.multiplyScalar(1 + fbm(x * 2.5, y * 2.5, z * 2.5) * 0.1);
+      });
+      const mat = new THREE.MeshPhysicalMaterial({
+        vertexColors: true, map: crumbTex, bumpMap: bunTex, bumpScale: 0.6,
+        roughness: 0.55, clearcoat: 0.2, clearcoatRoughness: 0.5, sheen: 0.3, sheenColor: C('#ffcf8a')
+      });
+      return shadowed(new THREE.Mesh(geo, mat));
+    };
+
+    // Котлета
+    builders.patty = () => {
+      const R = 1.78, h = 0.5, rs = 0.2;
+      const pts = [];
+      for (let i = 0; i <= 8; i++) pts.push([(R - rs) * (i / 8), 0]);
+      for (let i = 1; i <= 14; i++) { const a = -Math.PI / 2 + Math.PI * (i / 14); pts.push([R - rs + rs * Math.cos(a), h / 2 + (h / 2) * Math.sin(a)]); }
+      for (let i = 1; i <= 8; i++) pts.push([(R - rs) * (1 - i / 8), h]);
+      const geo = lathe(pts, 96);
+      geo.computeVertexNormals();
+      const p = geo.attributes.position, nr = geo.attributes.normal;
+      for (let i = 0; i < p.count; i++) {
+        const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+        const d = fbm(x * 2.3, y * 2.3, z * 2.3) * 0.075 + vnoise(x * 7, y * 7, z * 7) * 0.022;
+        p.setXYZ(i, x + nr.getX(i) * d, y + nr.getY(i) * d, z + nr.getZ(i) * d);
+      }
+      smoothNormalsByPosition(geo);
+      remapUV(geo, 0.5, 5, 1.2);
+      const cA = C('#5e2d13'), cB = C('#3a1a0a'), cC = C('#8a4a22'), cChar = C('#1f0e05');
+      setColors(geo, (c, x, y, z, nx, ny) => {
+        const n1 = fbm(x * 3.1, y * 3.1, z * 3.1);
+        mix(c, cA, cB, 0.5 + n1 * 0.9);
+        const side = 1 - Math.abs(ny);
+        c.lerp(cC, side * 0.35 * (0.5 + vnoise(x * 6, y * 6, z * 6) * 0.5));
+        // подгоревшие края корочки
+        const ch = vnoise(x * 4.5 + 3, y * 4.5, z * 4.5);
+        if (ch > 0.55) c.lerp(cChar, (ch - 0.55) * 1.2);
+      });
+      const mat = new THREE.MeshPhysicalMaterial({
+        vertexColors: true, map: pattyTex, bumpMap: pattyBump, bumpScale: 1.6,
+        roughness: 0.78, clearcoat: 0.28, clearcoatRoughness: 0.45, sheen: 0.25, sheenColor: C('#a0502a')
+      });
+      return shadowed(new THREE.Mesh(geo, mat));
+    };
+
+    // Плавленый чеддер со свисающими углами
+    builders.cheese = () => {
+      const S = 3.25, geo = new THREE.BoxGeometry(S, 0.055, S, 44, 1, 44);
+      const p = geo.attributes.position;
+      for (let i = 0; i < p.count; i++) {
+        let x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+        // скругление углов
+        const ax = Math.abs(x) / (S / 2), az = Math.abs(z) / (S / 2);
+        const corner = Math.pow(ax * az, 3);
+        x *= 1 - corner * 0.06; z *= 1 - corner * 0.06;
+        const d = Math.hypot(x, z);
+        const dr = Math.max(0, d - 1.45);
+        y -= dr * dr * 0.55 + dr * 0.12;
+        y += Math.sin(x * 5.1) * Math.cos(z * 4.3) * 0.025 * Math.min(1, dr * 4);
+        p.setXYZ(i, x, y + 0.075, z);
+      }
+      geo.computeVertexNormals();
+      geo.rotateY(Math.PI / 4);
+      const chA = C('#f5a623'), chB = C('#f0900f'), chC = C('#d96a04');
+      setColors(geo, (c, x, y, z) => {
+        const d = Math.hypot(x, z);
+        mix(c, chA, chB, smooth(clamp(d / 1.5)));
+        c.lerp(chC, smooth(clamp((d - 1.5) / 0.7)) * 0.7);
+        c.multiplyScalar(1 + vnoise(x * 3, 0, z * 3) * 0.05);
+      });
+      const mat = new THREE.MeshPhysicalMaterial({
+        vertexColors: true, color: '#ffffff', roughness: 0.5, clearcoat: 0.25, clearcoatRoughness: 0.35,
+        sheen: 0.15, sheenColor: C('#ffd060')
+      });
+      return shadowed(new THREE.Mesh(geo, mat));
+    };
+
+    // Волнистый салат
+    function polarGeo(NR, NS, fn) {
+      const pos = [], col = [], idx = [];
+      const c = new THREE.Color();
+      for (let i = 0; i <= NR; i++) {
+        const t = i / NR;
+        for (let j = 0; j <= NS; j++) {
+          const th = (j / NS) * Math.PI * 2;
+          const v = fn(t, th, c);
+          pos.push(v[0], v[1], v[2]);
+          col.push(c.r, c.g, c.b);
+        }
+      }
+      for (let i = 0; i < NR; i++) for (let j = 0; j < NS; j++) {
+        const a = i * (NS + 1) + j, b = a + NS + 1;
+        idx.push(a, b, a + 1, b, b + 1, a + 1);
+      }
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+      geo.setAttribute('color', new THREE.Float32BufferAttribute(col, 3));
+      geo.setIndex(idx);
+      smoothNormalsByPosition(geo);
+      return geo;
+    }
+    builders.lettuce = () => {
+      const g = new THREE.Group();
+      const cIn = C('#e2f09a'), cMid = C('#8fcf4a'), cOut = C('#3f8f22'), cVein = C('#d8f0a0');
+      const leaf = (R, ph, amp) => polarGeo(16, 160, (t, th, c) => {
+        const Rth = R + 0.12 * Math.sin(th * 7 + ph) + 0.07 * Math.sin(th * 13 + ph * 2.1);
+        const r = t * Rth;
+        const ruffle = (amp * Math.sin(th * 17 + ph) + amp * 0.55 * Math.sin(th * 29 + ph * 3)) * t * t * t;
+        const y = 0.05 * (1 - t * t) + ruffle - 0.16 * t * t * t * t;
+        mix(c, cIn, cMid, smooth(clamp(t / 0.6)));
+        c.lerp(cOut, smooth(clamp((t - 0.55) / 0.45)));
+        const vein = Math.pow(Math.abs(Math.sin(th * 9 + t * 1.5 + ph)), 40) * (1 - t) * 0.7;
+        c.lerp(cVein, vein);
+        return [r * Math.cos(th), y, r * Math.sin(th)];
+      });
+      const mat = new THREE.MeshPhysicalMaterial({ vertexColors: true, side: THREE.DoubleSide, roughness: 0.5, clearcoat: 0.3, clearcoatRoughness: 0.4, sheen: 0.5, sheenColor: C('#e6ffb0') });
+      const l1 = shadowed(new THREE.Mesh(leaf(1.9, 0.4, 0.09), mat));
+      const l2 = shadowed(new THREE.Mesh(leaf(1.75, 2.2, 0.08), mat));
+      l2.position.y = 0.05; l2.rotation.y = 0.9;
+      g.add(l1, l2);
+      return g;
+    };
+
+    // Ломтики томата
+    builders.tomato = () => {
+      const g = new THREE.Group();
+      const geo = new THREE.CylinderGeometry(0.8, 0.8, 0.15, 56, 1);
+      geo.translate(0, 0.075, 0);
+      const side = new THREE.MeshPhysicalMaterial({ color: '#c8200f', roughness: 0.25, clearcoat: 0.8, clearcoatRoughness: 0.15 });
+      const cap = new THREE.MeshPhysicalMaterial({ map: tomatoTex, roughness: 0.22, clearcoat: 0.9, clearcoatRoughness: 0.1 });
+      [[0, 0.75, 0], [2.1, 0.75, 0.035], [4.2, 0.72, 0.015]].forEach(([a, r, y], i) => {
+        const m = shadowed(new THREE.Mesh(geo, [side, cap, cap]));
+        m.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
+        m.rotation.set((rnd() - 0.5) * 0.08, rnd() * 6, (rnd() - 0.5) * 0.08);
+        g.add(m);
+      });
+      return g;
+    };
+
+    // Кольца красного лука
+    builders.onion = () => {
+      const g = new THREE.Group();
+      const outer = new THREE.MeshPhysicalMaterial({ color: '#b5539a', roughness: 0.3, clearcoat: 0.7, sheen: 0.5, sheenColor: C('#ffc0ea') });
+      const inner = new THREE.MeshPhysicalMaterial({ color: '#f2dcea', roughness: 0.3, clearcoat: 0.6, transmission: 0, sheen: 0.4, sheenColor: C('#ffffff') });
+      [[0.62, -0.35, 0.3], [0.5, 0.55, -0.4], [0.44, 0.2, 0.75], [0.56, -0.5, -0.65], [0.38, 0.9, 0.4]].forEach(([r, x, z], i) => {
+        const ring = new THREE.Group();
+        const t1 = new THREE.TorusGeometry(r, 0.05, 10, 64); t1.rotateX(Math.PI / 2); t1.scale(1, 0.65, 1);
+        const t2 = new THREE.TorusGeometry(r - 0.09, 0.045, 10, 64); t2.rotateX(Math.PI / 2); t2.scale(1, 0.65, 1);
+        ring.add(shadowed(new THREE.Mesh(t1, outer)), shadowed(new THREE.Mesh(t2, inner)));
+        ring.children.forEach((m) => { m.castShadow = false; }); // тонкие кольца не бросают резких «восьмёрок» на котлету
+        ring.position.set(x, 0.035 + i * 0.006, z);
+        ring.rotation.set((rnd() - 0.5) * 0.1, 0, (rnd() - 0.5) * 0.1);
+        g.add(ring);
+      });
+      return g;
+    };
+
+    // Маринованные огурцы
+    builders.pickles = () => {
+      const g = new THREE.Group();
+      const geo = new THREE.CylinderGeometry(0.42, 0.42, 0.06, 40, 1);
+      geo.translate(0, 0.03, 0);
+      const side = new THREE.MeshPhysicalMaterial({ color: '#3d6a1a', roughness: 0.35, clearcoat: 0.7 });
+      const cap = new THREE.MeshPhysicalMaterial({ map: pickleTex, roughness: 0.3, clearcoat: 0.8, clearcoatRoughness: 0.15 });
+      [[0, 0, 0], [0.85, 0.0, 0.01], [0.85, 1.25, 0.02], [0.85, 2.5, 0.0], [0.85, 3.75, 0.015], [0.85, 5.0, 0.01]].forEach(([r, a, y]) => {
+        const m = shadowed(new THREE.Mesh(geo, [side, cap, cap]));
+        m.position.set(Math.cos(a) * r, y, Math.sin(a) * r);
+        m.rotation.set((rnd() - 0.5) * 0.14, rnd() * 6, (rnd() - 0.5) * 0.14);
+        g.add(m);
+      });
+      return g;
+    };
+
+    // Соус с подтёками
+    const makeSauce = (color, ph) => () => {
+      const g = new THREE.Group();
+      const mat = new THREE.MeshPhysicalMaterial({ color, roughness: 0.16, clearcoat: 1, clearcoatRoughness: 0.08, side: THREE.DoubleSide });
+      const R0 = 1.5;
+      const Rf = (th) => R0 + 0.1 * Math.sin(th * 5 + ph) + 0.06 * Math.sin(th * 11 + ph * 2);
+      const geo = polarGeo(10, 120, (t, th, c) => {
+        const r = t * Rf(th);
+        const y = 0.05 * (1 - t * t) + 0.014 * Math.sin(th * 9 + t * 6) * t;
+        return [r * Math.cos(th), y, r * Math.sin(th)];
+      });
+      g.add(shadowed(new THREE.Mesh(geo, mat)));
+      const drips = 7;
+      for (let i = 0; i < drips; i++) {
+        const th = (i / drips) * Math.PI * 2 + rnd() * 0.5 + ph;
+        const len = 0.03 + rnd() * 0.1;
+        const rad = 0.06 + rnd() * 0.035;
+        const dg = new THREE.CapsuleGeometry(rad, len, 4, 12);
+        const m = shadowed(new THREE.Mesh(dg, mat));
+        const r = Rf(th) - 0.04;
+        m.position.set(Math.cos(th) * r, -len / 2 + 0.01, Math.sin(th) * r);
+        m.scale.set(1.2, 1, 0.75);
+        m.rotation.y = -th;
+        g.add(m);
+      }
+      return g;
+    };
+    builders.sauceB = makeSauce('#f2d9a0', 1.2);
+    builders.sauceT = makeSauce('#e8562a', 0.2);
+
+    /* ---- Сборка сцены ---- */
+    const root = new THREE.Group();
+    scene.add(root);
+
+    LAYERS.forEach((L, i) => {
+      L.holder = new THREE.Group();
+      L.obj = builders[L.key]();
+      L.holder.add(L.obj);
+      root.add(L.holder);
+      L.mats = [];
+      L.obj.traverse((o) => {
+        if (o.isMesh) {
+          (Array.isArray(o.material) ? o.material : [o.material]).forEach((m) => {
+            if (!L.mats.includes(m)) { m.userData.base = m.color.clone(); m.userData.sheen = m.sheen || 0; m.userData.cc = m.clearcoat || 0; L.mats.push(m); }
+          });
+        }
+      });
+      L.cm = 1;
+      L.scatter = new THREE.Vector3(...SCATTER[i]);
+      L.srx = 0.35 + rnd() * 0.6;
+      L.srz = (rnd() - 0.5) * 1.0;
+      L.spinDir = rnd() > 0.5 ? 1 : -1;
+      L.off = new THREE.Vector3((rnd() - 0.5) * 8, 7 + rnd() * 5, (rnd() - 0.5) * 6);
+      L.ip = { v: 0 };
+    });
+    // Индексы для режима «крупный план»
+    const groups = {};
+    LAYERS.forEach((L) => { (groups[L.group] = groups[L.group] || []).push(L); });
+    Object.values(groups).forEach((arr) => arr.forEach((L, k) => { L.spotK = k; L.spotN = arr.length; }));
+
+    // Мягкая контактная тень
+    const contact = new THREE.Mesh(new THREE.PlaneGeometry(5.5, 5.5), new THREE.MeshBasicMaterial({ map: shadowTex, transparent: true, depthWrite: false, opacity: 0.6 }));
+    contact.rotation.x = -Math.PI / 2;
+    contact.renderOrder = -1;
+    root.add(contact);
+
+    // Искры / угольки
+    const EMB = mob ? 60 : 130;
+    const embGeo = new THREE.BufferGeometry();
+    const embPos = new Float32Array(EMB * 3), embSpd = new Float32Array(EMB);
+    for (let i = 0; i < EMB; i++) {
+      embPos[i * 3] = (rnd() - 0.5) * 22; embPos[i * 3 + 1] = (rnd() - 0.5) * 14; embPos[i * 3 + 2] = -8 + rnd() * 9;
+      embSpd[i] = 0.2 + rnd() * 0.6;
+    }
+    embGeo.setAttribute('position', new THREE.BufferAttribute(embPos, 3));
+    const embers = new THREE.Points(embGeo, new THREE.PointsMaterial({ size: 0.09, map: sparkTex, transparent: true, depthWrite: false, blending: THREE.AdditiveBlending, color: '#ffb36a', opacity: 0.8 }));
+    scene.add(embers);
+
+    /* ---- Подписи слоёв (HTML-оверлей) ---- */
+    const labelsEl = $('#labels');
+    LAYERS.forEach((L, i) => {
+      const side = i % 2 === 0 ? 1 : -1;
+      L.side = side;
+      const el = document.createElement('div');
+      el.className = 'lbl ' + (side > 0 ? 'lbl--r' : 'lbl--l');
+      el.innerHTML = `<i class="lbl-dot"></i><i class="lbl-line"></i><div class="lbl-body"><b data-short="${L.short}">${L.name}</b><span>${L.desc}</span><em>${L.meta}</em></div>`;
+      labelsEl.appendChild(el);
+      L.label = el;
+    });
+    const total = document.createElement('div');
+    total.className = 'lbl-total';
+    total.innerHTML = 'Итого: <b>455 г</b> · <b>1 110 ккал</b> · 10 слоёв';
+    labelsEl.appendChild(total);
+
+    const glowEl = $('#glow');
+
+    /* ---- Цикл ---- */
+    const tmp = new THREE.Vector3();
+    const clock = new THREE.Clock();
+    const GAP = 0.7;
+    const totalH = LAYERS.reduce((a, L) => a + L.h, 0);
+    const n = LAYERS.length;
+    let lastLabelsVisible = false;
+
+    function update() {
+      const time = clock.getElapsedTime();
+      const S = state;
+      const m = isMobile();
+      mouse.sx = lerp(mouse.sx, mouse.x, 0.05);
+      mouse.sy = lerp(mouse.sy, mouse.y, 0.05);
+
+      const ex = S.explode;
+      const span = totalH + GAP * (n - 1) * ex;
+      let acc = -span / 2;
+      const fs = [S.f0, S.f1, S.f2, S.f3, S.f4];
+      const fSum = clamp(fs.reduce((a, b) => a + b, 0));
+
+      LAYERS.forEach((L, i) => {
+        const stackY = acc;
+        L.stackY = stackY;
+        acc += L.h + GAP * ex;
+        const st = 0.045;
+        const a = smooth(clamp((S.assemble - i * st) / (1 - (n - 1) * st)));
+        const sp = L.scatter;
+        let x = lerp(sp.x, 0, a);
+        let y = lerp(sp.y, stackY, a) + Math.sin(Math.PI * a) * 0.55;
+        let z = lerp(sp.z, 0, a);
+        y += (1 - a) * Math.sin(time * 1.1 + i * 1.7) * 0.12;
+        let rx = (1 - a) * (L.srx + Math.sin(time * 0.6 + i) * 0.12);
+        let rz = (1 - a) * (L.srz + Math.cos(time * 0.5 + i) * 0.1);
+        let ry = S.rotY + time * 0.18 + (1 - a) * (time * 0.35 * L.spinDir + i);
+        let sc = 1;
+
+        const f = smooth(clamp(fs[L.group]));
+        const dim = smooth(clamp(fSum - fs[L.group]));
+        if (f > 0.0005) {
+          const cfg = SPOT[L.group];
+          const spY = (L.spotK - (L.spotN - 1) / 2) * cfg.gap;
+          x = lerp(x, 0, f); y = lerp(y, spY, f); z = lerp(z, 1.6, f);
+          rx = lerp(rx, cfg.tilt, f);
+          sc = lerp(sc, cfg.scale, f);
+        }
+        z -= dim * 2.8;
+        sc *= (1 - dim * 0.12) * lerp(0.82, 1, a);
+
+        const ip = L.ip.v;
+        if (ip < 1) {
+          const k = Math.pow(1 - ip, 2);
+          x += L.off.x * k; y += L.off.y * k; z += L.off.z * k; ry += k * 4 * L.spinDir;
+        }
+        L.holder.position.set(x, y, z);
+        L.holder.rotation.set(rx, ry, rz);
+        L.holder.scale.setScalar(sc);
+
+        const cm = 1 - 0.74 * dim;
+        if (Math.abs(cm - L.cm) > 0.003) {
+          L.cm = cm;
+          L.mats.forEach((mt) => {
+            mt.color.copy(mt.userData.base).multiplyScalar(cm);
+            mt.envMapIntensity = cm;
+            if (mt.userData.sheen) mt.sheen = mt.userData.sheen * cm * cm;
+            if (mt.userData.cc) mt.clearcoat = mt.userData.cc * cm;
+          });
+        }
+      });
+
+      // контактная тень
+      const b0 = LAYERS[0].holder.position;
+      contact.position.set(0, (S.explode > 0.01 ? -span / 2 : b0.y) - 0.06 - S.explode * 0.3, 0);
+      contact.material.opacity = 0.55 * smooth(clamp(S.assemble)) * (1 - fSum) * (1 - clamp(S.explode - 1));
+      contact.scale.setScalar(1 + S.explode * 0.25);
+
+      root.position.set(S.gx, S.gy + Math.sin(time * 1.3) * 0.05, 0);
+
+      // камера: следим, чтобы бургер помещался по ширине (мобильные)
+      const aspect = camera.aspect;
+      const halfT = Math.tan((FOV * Math.PI) / 360);
+      const need = (Math.abs(S.gx) + (m ? 2.05 : 2.3)) / (halfT * aspect);
+      const d = Math.max(S.camDist, need);
+      camera.position.set(mouse.sx * 0.6, S.targetY + Math.sin(S.camElev) * d - mouse.sy * 0.35, Math.cos(S.camElev) * d);
+      camera.lookAt(0, S.targetY, 0);
+
+      // угольки
+      const pa = embGeo.attributes.position;
+      for (let i = 0; i < EMB; i++) {
+        let yy = pa.getY(i) + embSpd[i] * 0.012;
+        if (yy > 7) yy = -7;
+        pa.setY(i, yy);
+        pa.setX(i, pa.getX(i) + Math.sin(time * 0.8 + i) * 0.002);
+      }
+      pa.needsUpdate = true;
+
+      // свечение за бургером
+      tmp.set(S.gx, S.gy, 0).project(camera);
+      const sx = (tmp.x * 0.5 + 0.5) * window.innerWidth, sy = (-tmp.y * 0.5 + 0.5) * window.innerHeight;
+      glowEl.style.transform = `translate3d(${sx}px, ${sy}px, 0) scale(${1 + fSum * 0.25})`;
+      glowEl.style.opacity = String(clamp(1 - Math.abs(S.gy) / 8));
+
+      // подписи
+      const lv = S.labels;
+      if (lv > 0.005) {
+        if (!lastLabelsVisible) { labelsEl.style.display = 'block'; lastLabelsVisible = true; }
+        labelsEl.style.opacity = '1';
+        const W = window.innerWidth, Hh = window.innerHeight;
+        LAYERS.forEach((L, i) => {
+          const side = m ? 1 : L.side;
+          tmp.set(S.gx + side * (L.r + 0.12), S.gy + L.holder.position.y + L.h / 2, 0).project(camera);
+          let px = (tmp.x * 0.5 + 0.5) * W; const py = (-tmp.y * 0.5 + 0.5) * Hh;
+          if (m) { const lw = L.lw || (L.lw = L.label.offsetWidth); px = Math.min(px, W - lw - 6); }
+          const o = clamp(lv * 1.6 - (n - 1 - i) * 0.05);
+          L.label.className = 'lbl ' + (side > 0 ? 'lbl--r' : 'lbl--l');
+          const shift = (1 - o) * 24 * side;
+          L.label.style.transform = `translate3d(${px + shift}px, ${py}px, 0) translate(${side > 0 ? '-5px' : 'calc(-100% + 5px)'}, -50%)`;
+          L.label.style.opacity = String(o);
+        });
+        total.style.opacity = String(clamp(lv * 2 - 1));
+      } else if (lastLabelsVisible) {
+        labelsEl.style.opacity = '0';
+        labelsEl.style.display = 'none';
+        lastLabelsVisible = false;
+      }
+
+      renderer.render(scene, camera);
+    }
+
+    function onResize() {
+      const w = window.innerWidth, h = window.innerHeight;
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      LAYERS.forEach((L) => { L.lw = 0; });
+    }
+    window.addEventListener('resize', onResize);
+    onResize();
+
+    // первый кадр — компиляция шейдеров
+    update();
+    gsap.ticker.add(update);
+
+    return {
+      intro() {
+        gsap.to(LAYERS.map((L) => L.ip), { v: 1, duration: 2.1, ease: 'expo.out', stagger: { each: 0.07, from: 'start' } });
+      }
+    };
+  }
+
+  /* ---------------- Запуск ---------------- */
+  let resizeTimer = null;
+  const rebuild = () => { buildTimeline(); ScrollTrigger.refresh(); };
+  window.addEventListener('resize', () => {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(rebuild, 250);
+  });
+
+  const fontsReady = document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve();
+  const sceneP = initScene().catch((err) => {
+    console.warn('[СОЧНО] 3D отключено:', err && err.message);
+    document.body.classList.add('no-webgl');
+    return null;
+  });
+  const timeout = new Promise((res) => setTimeout(res, 9000));
+
+  Promise.race([Promise.all([sceneP, fontsReady]), timeout]).then(async () => {
+    buildTimeline();
+    const api = await Promise.race([sceneP, Promise.resolve(null)]);
+    finishLoading(() => {
+      if (api) api.intro();
+      else sceneP.then((a) => a && a.intro());
+    });
+  });
+  window.addEventListener('load', () => { if (introPlayed) rebuild(); });
+})();
+
+</script>
+</body>
+</html>

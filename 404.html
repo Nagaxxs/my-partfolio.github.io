@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Страница не найдена — Naga</title>
+  <meta name="robots" content="noindex">
+  <meta name="theme-color" content="#07070b">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='64' height='64' rx='16' fill='url(%23g)'/%3E%3Ctext x='32' y='44' font-family='Arial' font-weight='800' font-size='34' text-anchor='middle' fill='white'%3EN%3C/text%3E%3C/svg%3E">
+  <!--
+    GitHub Pages отдаёт этот файл для ЛЮБОГО несуществующего адреса, в том числе вложенного
+    (например /repo/a/b/c). Поэтому стили встроены прямо сюда, а корень сайта (для ссылки
+    «На главную» и локальных шрифтов) определяется скриптом ниже — пути остаются относительными.
+  -->
+  <style>
+    :root{--bg:#07070b;--text:#ededf3;--muted:#9a9ab0;--line:rgba(255,255,255,.08);--line-2:rgba(255,255,255,.14);
+      --grad:linear-gradient(110deg,#a78bfa 0%,#22d3ee 50%,#f0abfc 100%);--grad-btn:linear-gradient(110deg,#7c3aed,#4f46e5 45%,#0891b2);
+      --f-body:'Manrope',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;--f-display:'Unbounded','Manrope',system-ui,sans-serif;--ease:cubic-bezier(.22,1,.36,1)}
+    *,*::before,*::after{box-sizing:border-box}
+    html,body{height:100%}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--f-body);-webkit-font-smoothing:antialiased;overflow:hidden;display:grid;place-items:center;text-align:center}
+    a{color:inherit;text-decoration:none}
+    .bg{position:fixed;inset:0;pointer-events:none}
+    .aurora{position:absolute;inset:-20%;filter:blur(80px);opacity:.7}
+    .blob{position:absolute;border-radius:50%;mix-blend-mode:screen;animation:float 18s ease-in-out infinite}
+    .b1{width:560px;height:560px;left:10%;top:5%;background:radial-gradient(circle,#7c3aed,transparent 65%)}
+    .b2{width:520px;height:520px;right:8%;top:20%;background:radial-gradient(circle,#0891b2,transparent 65%);animation-delay:-7s;animation-duration:22s}
+    .b3{width:420px;height:420px;left:40%;bottom:0;background:radial-gradient(circle,#db2777,transparent 65%);opacity:.5;animation-delay:-12s;animation-duration:26s}
+    @keyframes float{0%,100%{transform:translate(0,0) scale(1)}33%{transform:translate(60px,40px) scale(1.1)}66%{transform:translate(-50px,30px) scale(.95)}}
+    .grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.055) 1px,transparent 1px);background-size:64px 64px;
+      -webkit-mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,#000 20%,transparent 75%);mask-image:radial-gradient(ellipse 70% 60% at 50% 50%,#000 20%,transparent 75%)}
+    main{position:relative;z-index:1;padding:24px;max-width:640px;animation:in 1s var(--ease) both}
+    @keyframes in{from{opacity:0;transform:translateY(24px);filter:blur(8px)}to{opacity:1;transform:none;filter:none}}
+    .logo{display:inline-flex;align-items:center;gap:10px;font-family:var(--f-display);font-weight:700;font-size:20px;margin-bottom:36px}
+    .logo__mark{display:grid;place-items:center;width:36px;height:36px;border-radius:11px;background:var(--grad-btn);color:#fff;font-size:17px;box-shadow:0 6px 24px -6px rgba(124,58,237,.8)}
+    .logo__dot{color:#22d3ee}
+    .code{font-family:var(--f-display);font-weight:700;font-size:clamp(96px,22vw,200px);line-height:1;letter-spacing:-.06em;margin:0;
+      background:var(--grad);background-size:200% auto;-webkit-background-clip:text;background-clip:text;color:transparent;animation:grad 6s linear infinite;filter:drop-shadow(0 10px 50px rgba(124,58,237,.45))}
+    @keyframes grad{to{background-position:200% center}}
+    h1{font-family:var(--f-display);font-weight:700;font-size:clamp(22px,4vw,34px);letter-spacing:-.03em;margin:18px 0 12px}
+    p{color:var(--muted);font-size:17px;line-height:1.6;margin:0 0 34px}
+    .btn{position:relative;display:inline-flex;align-items:center;gap:10px;height:54px;padding:0 28px;border-radius:999px;font-weight:700;font-size:16px;color:#fff;
+      background:var(--grad-btn);box-shadow:0 0 0 1px rgba(255,255,255,.12) inset,0 10px 40px -10px rgba(124,58,237,.8);overflow:hidden;isolation:isolate;transition:transform .3s var(--ease)}
+    .btn::before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(110deg,transparent 30%,rgba(255,255,255,.45) 50%,transparent 70%);background-size:250% 100%;animation:shimmer 2.8s linear infinite}
+    @keyframes shimmer{from{background-position:150% 0}to{background-position:-100% 0}}
+    .btn:hover{transform:translateY(-2px)}
+    .btn svg{transition:transform .3s var(--ease)}.btn:hover svg{transform:translateX(-4px)}
+    @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <div class="bg" aria-hidden="true">
+    <div class="aurora"><span class="blob b1"></span><span class="blob b2"></span><span class="blob b3"></span></div>
+    <div class="grid"></div>
+  </div>
+  <main>
+    <a href="index.html" class="logo js-home" aria-label="Naga — на главную"><span class="logo__mark">N</span><span>Naga<span class="logo__dot">.</span></span></a>
+    <p class="code">404</p>
+    <h1>Такой страницы нет</h1>
+    <p>Возможно, ссылка устарела или в&nbsp;адресе опечатка. Вернитесь на&nbsp;главную — там все работы и&nbsp;контакты.</p>
+    <a href="index.html" class="btn js-home">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 6l-6 6 6 6"/></svg>
+      <span>На главную</span>
+    </a>
+  </main>
+  <script>
+  /* Ищем корень сайта: поднимаемся по пути вверх, пока не найдём assets/css/fonts.css.
+     Работает и для https://user.github.io/repo/…, и для собственного домена. */
+  (function () {
+    var parts = location.pathname.split('/').slice(1, -1); // каталоги текущего адреса
+    var candidates = [];
+    for (var i = parts.length; i >= 0; i--) candidates.push('/' + parts.slice(0, i).join('/') + (i ? '/' : ''));
+    if (!window.fetch || location.protocol === 'file:') return;
+    (function next(k) {
+      if (k >= candidates.length) return;
+      var root = candidates[k];
+      fetch(root + 'assets/css/fonts.css').then(function (r) {
+        if (!r.ok) return next(k + 1);
+        document.querySelectorAll('.js-home').forEach(function (a) { a.href = root; });
+        var l = document.createElement('link'); l.rel = 'stylesheet'; l.href = root + 'assets/css/fonts.css';
+        document.head.appendChild(l);
+      }).catch(function () { next(k + 1); });
+    })(0);
+  })();
+  </script>
+</body>
+</html>
